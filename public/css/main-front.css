@@ -1,0 +1,50 @@
+body{
+    background:#fff;
+    font-family: "Tahoma" !important;
+}
+#header{
+    background-color:#454545;
+    padding: 30px 20px 30px 20px;
+    display: block ruby;
+}
+#title-header{
+    font-size: 30px;
+    width: 50%;
+    color:#fff;
+    text-align: left;
+}
+
+#header-logo{
+    display:inline
+}
+.title {
+    text-align: center;
+    padding: 8px 0 8px 0;
+    background-color: #ececec;
+    /*width: 60%;*/
+    /*margin-right: 20%;*/
+    margin-right: 25px;
+    margin-left: 25px;
+    border: solid 1px #bdbdbd;
+}
+#form {
+    padding: 50px 20px;
+    border: solid 1px #bdbdbd;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+button{
+    background-color: #00e1e1;
+    border-color: #58eaea;
+    border-radius: 5px;
+    padding: 5px 15px;
+    color: #424242;
+    margin: 20px 45%;
+    width: 25%;
+}
+.response{
+    padding: 50px 20px;
+    border: solid 1px #bdbdbd;
+    margin-right: 10px;
+    margin-left: 10px;
+}

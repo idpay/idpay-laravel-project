@@ -1,0 +1,91 @@
+.row {
+  display: block;
+  margin-right: -15px;
+  margin-left: -15px; }
+  .row:before {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0; }
+  .row:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0; }
+
+.row-zero {
+  display: block;
+  margin-right: 0;
+  margin-left: 0; }
+  .row-zero:before {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0; }
+  .row-zero:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0; }
+
+[class^=grid-] {
+  padding-right: 15px;
+  padding-left: 15px;
+  position: relative; }
+  [class^=grid-]:before {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0; }
+  [class^=grid-]:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0; }
+
+.container {
+  max-width: 1200px;
+  min-width: 940px;
+  margin: auto;
+  padding-right: 15px;
+  padding-left: 15px;
+  display: block;
+  /* 2 */ }
+  .container:before {
+    clear: both; }
+  .container:after {
+    clear: both; }
+
+.cf:before,
+.cf:after {
+  content: " ";
+  /* 1 */
+  display: table;
+  /* 2 */ }
+
+.cf:after {
+  clear: both; }
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.cf {
+  *zoom: 1; }
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }

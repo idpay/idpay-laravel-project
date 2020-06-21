@@ -1,0 +1,85 @@
+@media only screen and (min-width: 320px) and (max-width: 2000px) {
+  .grid-dp-1 {
+    width: 8.33333%;
+    float: right;
+    padding-right: 15px;
+    padding-left: 15px; }
+  .grid-dp-2 {
+    width: 16.66667%;
+    float: right;
+    padding-right: 15px;
+    padding-left: 15px; }
+  .grid-dp-3 {
+    width: 25%;
+    float: right;
+    padding-right: 15px;
+    padding-left: 15px; }
+  .grid-dp-4 {
+    width: 33.33333%;
+    float: right;
+    padding-right: 15px;
+    padding-left: 15px; }
+  .grid-dp-5 {
+    width: 41.66667%;
+    float: right;
+    padding-right: 15px;
+    padding-left: 15px; }
+  .grid-dp-6 {
+    width: 50%;
+    float: right;
+    padding-right: 15px;
+    padding-left: 15px; }
+  .grid-dp-7 {
+    width: 58.33333%;
+    float: right;
+    padding-right: 15px;
+    padding-left: 15px; }
+  .grid-dp-8 {
+    width: 66.66667%;
+    float: right;
+    padding-right: 15px;
+    padding-left: 15px; }
+  .grid-dp-9 {
+    width: 75%;
+    float: right;
+    padding-right: 15px;
+    padding-left: 15px; }
+  .grid-dp-10 {
+    width: 83.33333%;
+    float: right;
+    padding-right: 15px;
+    padding-left: 15px; }
+  .grid-dp-11 {
+    width: 91.66667%;
+    float: right;
+    padding-right: 15px;
+    padding-left: 15px; }
+  .grid-dp-12 {
+    width: 100%;
+    float: right;
+    padding-right: 15px;
+    padding-left: 15px; }
+  .grid-dp-offset-1 {
+    margin-right: 8.33333%; }
+  .grid-dp-offset-2 {
+    margin-right: 16.66667%; }
+  .grid-dp-offset-3 {
+    margin-right: 25%; }
+  .grid-dp-offset-4 {
+    margin-right: 33.33333%; }
+  .grid-dp-offset-5 {
+    margin-right: 41.66667%; }
+  .grid-dp-offset-6 {
+    margin-right: 50%; }
+  .grid-dp-offset-7 {
+    margin-right: 58.33333%; }
+  .grid-dp-offset-8 {
+    margin-right: 66.66667%; }
+  .grid-dp-offset-9 {
+    margin-right: 75%; }
+  .grid-dp-offset-10 {
+    margin-right: 83.33333%; }
+  .grid-dp-offset-11 {
+    margin-right: 91.66667%; }
+  .grid-dp-offset-12 {
+    margin-right: 100%; } }
