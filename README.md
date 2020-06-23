@@ -1,4 +1,4 @@
-<p align="center"><img src="public/image/logo-orange.svg" width="400"></p>
+<p align="center"><img src="public/image/logo.svg" width="400"></p>
 
 ## About IDPay SandBox
 Simple project on Laravel framework for visual test API's payment service of IDPay.

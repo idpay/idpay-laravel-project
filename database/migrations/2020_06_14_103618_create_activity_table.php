@@ -17,14 +17,13 @@ class CreateActivityTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('order_id')->nullable();
             $table->enum('step',['create','redirect','return','verify'])->nullable();
-            $table->text('request')->nullable();
-            $table->text('response')->nullable();
+            $table->json('request')->nullable();
+            $table->json('response')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
-
-    /**
+   /**
      * Reverse the migrations.
      *
      * @return void

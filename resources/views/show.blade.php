@@ -1,13 +1,16 @@
 @extends('layouts.master')
 @section('title', 'Payment')
 
-
 @section('content')
 
-    <!-- Image loader -->
-    <div id='loader' style='display: none;'>
-        <img  src='{{asset('image/images.png')}}' width='32px' height='32px'>
+
+    <div id="loader"
+         style="display:none;width:69px;height:89px;border:1px solid black;position:absolute;top:50%;left:50%;padding:2px;">
+        <img src='{{asset('image/images.png')}}' width="64" height="64"/>
+        <br>Loading..
     </div>
+
+
     @if(is_array($activity))
         <div class="row">
             <div class="title"><h3>ایجاد تراکنش</h3></div>
@@ -54,17 +57,16 @@
                 </div>
             </div>
             <div class="col-md-6 " id="create" style="display: none">
-                <div class="response" id="request-create">
-                    <lable class="col-md-3">درخواست</lable>
-                </div>
-                <div class="response" id="response-create">
-                    <lable class="col-md-3">پاسخ</lable>
-                </div>
+                <lable class="col-md-3">درخواست</lable>
+                <textarea id="request-create" style="direction: ltr"></textarea>
+                <lable class="col-md-3">پاسخ</lable>
+                <textarea id="response-create" style="direction: ltr"></textarea>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 callback" style="display: none">
-                <button><a id="link" href="">انتقال به لینک دریافت شده</a></button>
+            <div class="col-md-6 callback" id="callback-link" style="display: none">
+                <button><span onClick="a_onClick()" data-link="" data-id="" data-orderId="" id="callback-button">انتقال به لینک دریافت شده</span>
+                </button>
 
             </div>
             <div class="col-md-6">
@@ -75,7 +77,7 @@
 
     @elseif(isset($activity) && is_object($activity))
 
-        @foreach($activity->get_Activity as $key=>$val)
+        @foreach($activity as $key=>$val)
             @if($val->step=='create')
 
                 <div class="row">
@@ -86,11 +88,11 @@
                             <div class=" row col-md-12">
                                 {{ Form::label('APIKEY', 'APIKEY', ['class' => 'col-md-3']) }}
 
-                                {{ Form::text('APIKEY',$activity->API_KEY,['readonly','class' => ' col-md-5']) }}
+                                {{ Form::text('APIKEY',$order->API_KEY,['readonly','class' => ' col-md-5']) }}
                             </div>
                             <div class=" row col-md-12">
                                 {{ Form::label('Sandbox', 'آزمایشگاه', ['class' => 'col-md-3']) }}
-                                @if($activity->sandbox==1)
+                                @if($order->sandbox==1)
                                     <input name="sandbox" type="checkbox" checked>
 
                                 @else
@@ -100,45 +102,54 @@
                             </div>
                             <div class="row col-md-12">
                                 {{ Form::label('Name', 'نام', ['class' => 'col-md-3']) }}
-                                {{ Form::text('name',$activity->name,['readonly','class' => ' col-md-5']) }}
+                                {{ Form::text('name',$order->name,['readonly','class' => ' col-md-5']) }}
 
                             </div>
                             <div class="row col-md-12">
                                 {{ Form::label('Phone', 'تلفن', ['class' => 'col-md-3']) }}
-                                {{ Form::text('phone',$activity->phone,['readonly','class' => ' col-md-5']) }}
+                                {{ Form::text('phone',$order->phone,['readonly','class' => ' col-md-5']) }}
 
                             </div>
 
                             <div class="row col-md-12">
                                 {{ Form::label('Mail', 'ایمیل', ['class' => 'col-md-3']) }}
-                                {{ Form::text('mail',$activity->mail,['readonly','class' => ' col-md-5']) }}
+                                {{ Form::text('mail',$order->mail,['readonly','class' => ' col-md-5']) }}
 
                             </div>
                             <div class="row col-md-12">
                                 {{ Form::label('Amount', 'قیمت', ['class' => 'col-md-3']) }}
-                                {{ Form::text('amount',$activity->amount,['readonly','class' => ' col-md-5']) }}
+                                {{ Form::text('amount',$order->amount,['readonly','class' => ' col-md-5']) }}
 
                             </div>
                             <div class="row col-md-12">
                                 {{ Form::label('Reseller', 'کد نمایندگی', ['class' => 'col-md-3']) }}
-                                {{ Form::text('reseller',$activity->reseller,['readonly','class' => ' col-md-5']) }}
+                                {{ Form::text('reseller',$order->reseller,['readonly','class' => ' col-md-5']) }}
 
                             </div>
                             <button disabled="true" onclick="payment_new()" readonly="readonly">Payment</button>
                         </div>
                     </div>
-                    <div class="col-md-6 " id="create" style="">
-                        <div class="response" id="request-create">
-                            <lable>درخواست</lable>
-                            <pre>{{$val->request}}</pre>
-                        </div>
-                        <div class="response" id="response-create">
-                            {{--                            @php    $response=json_decode($val->response);  @endphp--}}
+                    <div class="col-md-6 " id="create">
+                        <lable>درخواست</lable>
 
-                            <lable>پاسخ</lable>
-                            <pre>{{$val->response}}</pre>
+                        <textarea class="result" id="request-create" style="direction: ltr">
 
-                        </div>
+                        </textarea>
+                        <script>
+                            var r =@php echo $val->request @endphp;
+                            var textedJson = JSON.stringify(r, undefined, 4);
+                            $('#request-create').text(textedJson);
+                        </script>
+
+                        <lable>پاسخ</lable>
+                        <textarea id="response-create" style="direction: ltr">
+
+                        </textarea>
+                        <script>
+                            var r =@php echo $val->response @endphp;
+                            var textedJson = JSON.stringify(r, undefined, 4);
+                            $('#response-create').text(textedJson);
+                        </script>
                     </div>
                 </div>
             @endif
@@ -153,8 +164,13 @@
                     </div>
                     <div class="col-md-6">
                         <lable>Callback</lable>
-                        <pre>{{$val->request}}</pre>
-
+                        <textarea id="request-callback">
+                        </textarea>
+                        <script>
+                            var r =@php echo $val->request @endphp;
+                            var textedJson = JSON.stringify(r, undefined, 4);
+                            $('#request-callback').text(textedJson);
+                        </script>
                     </div>
                 </div>
             @endif
@@ -166,34 +182,41 @@
                     <div class="col-md-6">return</div>
                     <div class="col-md-6">
                         {{ Form::label('مقدار بازگشتی از درگاه', 'مقدار بازگشتی از درگاه') }}
-                        @php $response=json_decode($val->response) @endphp
+                        @php $response=json_decode($val->response,JSON_PRETTY_PRINT) @endphp
                         <div style="direction: ltr">
-                            <pre>@php print_r($response) @endphp </pre>
+                            <textarea id="response-return">@php print_r($response) @endphp </textarea>
+
+                            <script>
+                                var r =@php echo $val->response @endphp;
+                                var textedJson = JSON.stringify(r, undefined, 4);
+                                $('#response-return').text(textedJson);
+                            </script>
+
                         </div>
                     </div>
                 </div>
-                @if(sizeof($activity->get_Activity)==3)
+                @if(sizeof($activity)==3)
                     <div class="row">
                         <div class="title"><h3>تایید تراکنش</h3></div>
                         <div class="col-md-6">
+                            @php $response=json_decode($val->response) @endphp
                             @if($response->status==10)
                                 <div id="verifyButton">
-                                    <button onclick="verify('{{$response->id}}','{{$response->order_id}}')">تایید پرداخت
+                                    <button onclick="verify('{{$response->id}}','{{$response->order_id}}')">
+                                        تایید پرداخت
                                     </button>
                                 </div>
 
                             @else
-                                {{$response->status}}
+                                @if(isset($response->status))){{$response->status}}
+                                @endif
                             @endif
                         </div>
 
                         <div class="col-md-6" id="verify">
 
                             @if($val->step=='verify')
-                                {{ Form::label('درخواست', 'درخواست', ['class' => 'col-md-3']) }}
-                                <pre>{{$val->request}}))</pre>
-                                {{ Form::label('پاسخ', 'پاسخ', ['class' => 'col-md-3']) }}
-                                <pre> {{$val->response}} </pre>
+
                             @endif
                         </div>
                         @endif
@@ -207,11 +230,24 @@
 
                                 </div>
                                 <div class="col-md-6" id="verify">
-                                    khkhkhhj
                                     {{ Form::label('درخواست', 'درخواست', ['class' => 'col-md-3']) }}
-                                    <pre>{{$val->request}}))</pre>
+                                    <textarea id="request-verify"> </textarea>
+                                    <script>
+                                        var r =@php echo $val->request @endphp;
+                                        var textedJson = JSON.stringify(r, undefined, 4);
+                                        $('#request-verify').text(textedJson);
+                                    </script>
+
+
+
                                     {{ Form::label('پاسخ', 'پاسخ', ['class' => 'col-md-3']) }}
-                                    <pre> {{$val->response}} </pre>
+
+                                    <textarea id="response-verify"></textarea>
+                                    <script>
+                                        var r =@php echo $val->response @endphp;
+                                        var textedJson = JSON.stringify(r, undefined, 4);
+                                        $('#response-verify').text(textedJson);
+                                    </script>
                                 </div>
                                 @endif
 
@@ -222,11 +258,16 @@
                                 @section('footer')
 
                                     <script>
-                                        function a_onClick() {
 
-                                            link = ($('#callback-link').attr('data-link'));
-                                            order_id = ($('#callback-link').attr('data-orderId'));
-                                            id = ($('#callback-link').attr('data-id'));
+                                        $(document).ready(function () {
+                                            // document is loaded and DOM is ready
+                                            alert("document is ready");
+                                        });
+
+                                        function a_onClick() {
+                                            link = ($('#callback-button').attr('data-link'));
+                                            order_id = ($('#callback-button').attr('data-orderId'));
+                                            id = ($('callback-button').attr('data-id'));
                                             $.ajaxSetup({
                                                 headers: {
                                                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -246,7 +287,7 @@
                                                     window.location.replace(link);
 
                                                 },
-                                                beforeSend: function(){
+                                                beforeSend: function () {
                                                     // Show image container
                                                     $("#loader").show();
                                                 },
@@ -278,14 +319,28 @@
                                                 method: "post",
                                                 url: "{{ route('store') }}",
                                                 data: {values},
-                                                success: function (responce) {
+                                                success: function (response) {
                                                     $("#loader").hide();
 
                                                     $('#create').show();
-                                                    // $('#request-create').append(responce.request);
-                                                    // $('#response-create').append(responce.response.link);
-                                                    $('#create').html(responce);
-                                                    // $('#form :input').attr('readonly');
+
+
+                                                    var request = response.request;
+                                                    var _response = response.response;
+
+
+                                                    var textedJson = JSON.stringify(request, undefined, 4);
+                                                    $('#request-create').text(textedJson);
+
+
+                                                    var textedJson = JSON.stringify(_response, undefined, 4);
+                                                    $('#response-create').text(textedJson);
+
+                                                    $('#callback-link').show();
+                                                    $('#callback-button').attr('data-id', _response.id);
+                                                    $('#callback-button').attr('data-link', _response.link);
+                                                    $('#callback-button').attr('data-orderid', response.order_id);
+
                                                 },
                                                 beforeSend: function () {
                                                     // Show image container
@@ -307,10 +362,22 @@
                                                     id: id,
                                                     order_id: order_id
                                                 },
-                                                success: function (responce) {
+                                                success: function (response) {
                                                     $('#loader').hide();
                                                     $('#verifyButton').html('<button>تایید پرداخت</button>');
-                                                    $('#verify').html(responce)
+                                                    var request = response.request;
+                                                    var _response = response.response;
+
+
+                                                    var textedJsonRequest = JSON.stringify(request, undefined, 4);
+
+
+                                                    var textedJsonResponse = JSON.stringify(_response, undefined, 4);
+                                                    var output = '<lable class="col-md-3">درخواست</lable>\n' +
+                                                        '                <textarea id="request-verifyl" style="direction: ltr">' + textedJsonRequest + '</textarea>\n' +
+                                                        '                <lable class="col-md-3">پاسخ</lable>\n' +
+                                                        '                <textarea id="response-verify" style="direction: ltr">' + textedJsonResponse + '</textarea>';
+                                                    $('#verify').html(output)
                                                 }, beforeSend: function () {
                                                     // Show image container
                                                     $("#loader").show();

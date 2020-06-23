@@ -17,12 +17,16 @@ class ActivityController extends Controller
     public function show($id = 0)
     {
         $activity = [];
+        $order = [];
         $data = [];
         if ($id != 0) {
-            $activity = order::with('get_Activity')->where('id', $id)->first();
-        }
+            $order=Order::where('id',$id)->first();
+            $activity = Activity::where('order_id', $id)->get();
+            $activity->toJson();
 
+        }
         $data['activity'] = $activity;
+        $data['order'] = $order;
 
         return view('show', $data);
     }
@@ -49,7 +53,6 @@ class ActivityController extends Controller
         $params['callback'] = 'http://127.0.0.1:8000/callback';
 
         //set value for request field order table
-        $_request['params'] = $params;
         $_request['url'] = 'POST: https://api.idpay.ir/v1.1/payment';
         $_request['header'] = [
             'Content-Type' => 'application/json',
@@ -57,6 +60,7 @@ class ActivityController extends Controller
             'X-SANDBOX' => $params['sandbox']
         ];
 
+        $_request['params'] = $params;
 
         //connect to Payment API IDPay
         $client = new Client();
@@ -66,11 +70,10 @@ class ActivityController extends Controller
                 'headers' => $_request['header'],
                 'http_errors' => false
             ]);
-
+        $response = json_decode($res->getBody());
 
 
         if ($res->getStatusCode() == 201) {
-            $response = json_decode($res->getBody());
 
             //insert return id from API in order table
             Order::where('id', $params['order_id'])
@@ -84,17 +87,15 @@ class ActivityController extends Controller
             'request' => json_encode($_request),
             'response' => $res->getBody()
         ];
-        Activity::insert($activity);
+       $id=Activity::insertGetId($activity);
 
 
-        //set value for show in view
-        $data['response'] = $activity['response'];
-        $data['request'] = $activity['request'];
-        $data['step'] = $activity['step'];
-        $data['status'] = $res->getStatusCode();
-        $data['order_id'] = $params['order_id'];
 
-        return view('create_ajax', $data);
+       $data=Activity::where('id',$id)->first();
+       $data->tojson();
+       $data->request=json_decode($data->request);
+       $data->response=json_decode($data->response);
+        return $data;
 
     }
 
@@ -118,7 +119,7 @@ class ActivityController extends Controller
         $activity = array(
             'order_id' => $request['order_id'],
             'step' => 'return',
-            'request' => '',
+            'request' => json_encode([]),
             'response' => json_encode($request->all())
         );
         Activity::insert($activity);
@@ -224,17 +225,19 @@ class ActivityController extends Controller
             'request' => json_encode($_request),
             'response' => $res->getBody()
         ];
-        Activity::insert($activity);
+        $id=Activity::insertGetId($activity);
 
         //update staus
         Order::where('id', $params['order_id'])
             ->update(['status' => 'complete']);
 
-        //set value for show in view
-        $data['response'] = $activity['response'];
-        $data['request'] = $activity['request'];
-        $data['step'] = $activity['step'];
-        return view('create_ajax', $data);
+
+        $data=Activity::where('id',$id)->first();
+        $data->tojson();
+        $data->request=json_decode($data->request);
+        $data->response=json_decode($data->response);
+        return $data;
+
     }
 
     public function store_callback(Request $request)
@@ -244,8 +247,8 @@ class ActivityController extends Controller
         $activity = [
             'order_id' => $request['order_id'],
             'step' => 'redirect',
-            'request' => json_encode(['url' . $request['link']]),
-            'response' => ''
+            'request' => json_encode(['url ' . $request['link']]),
+            'response' =>json_encode([])
         ];
         Activity::insert($activity);
 
