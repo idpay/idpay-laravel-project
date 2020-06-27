@@ -53,8 +53,9 @@
 </div>
 
 
-<footer>
-    <p style="text-align: center; background: #454545; padding: 10px; color: #fff; margin-top: 30px; font-size:12px;    margin-bottom: 0;">
+<footer id="footer">
+
+    <p style="text-align: center;  font-size:12px; padding-top:10px; " >
         تمامی حقوق نزد <a href="https://idpay.ir/" target="_blank" style="color:#fe681e">IDPay</a> محفوظ می‌باشد &copy;
     </p>
 </footer>
