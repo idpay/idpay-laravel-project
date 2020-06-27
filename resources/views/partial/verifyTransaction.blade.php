@@ -44,8 +44,8 @@
             var form = $(this);
             var url = form.attr('action');
 
-
-            alert(url)
+            loadWaiting()
+            // alert(url)
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -59,6 +59,9 @@
                 data: form.serialize(),
                 success: function (result) {
                     jQuery('#verifyResult').html(result.data);
+                    stopLoadWaiting()
+
+
 
                 },
                 error: function (error) {

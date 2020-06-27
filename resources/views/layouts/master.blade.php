@@ -42,7 +42,6 @@
     </div>
 
 
-    {{--<div id="title-header"> آزمایشگاه سرویس پرداخت</div>--}}
 
 
 </header>
@@ -54,7 +53,15 @@
 </div>
 
 
+<footer>
+    <p style="text-align: center; background: #454545; padding: 10px; color: #fff; margin-top: 30px; font-size:12px;    margin-bottom: 0;">
+        تمامی حقوق نزد <a href="https://idpay.ir/" target="_blank" style="color:#fe681e">IDPay</a> محفوظ می‌باشد &copy;
+    </p>
+</footer>
+
 </body>
+
+
 
 <div class="row" id="loadWaiting"></div>
 

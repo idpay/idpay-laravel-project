@@ -58,7 +58,6 @@ class ActivityController extends Controller
                     'callbackHtml' => $callbackHtml,
                     'callbackResultHtml' => $callbackResultHtml,
                     'verifyTansactionHtml' => $verifyTansactionHtml,
-                    'order' => new Order(),
                 ]
             );
     }
