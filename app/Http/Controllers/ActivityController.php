@@ -18,16 +18,13 @@ use PHPUnit\Framework\Constraint\Callback;
 use Spatie\Fractal\Fractal;
 
 
-class ActivityController extends Controller
+class ActivityController extends MainController
 {
 
 
     private $calbackUrl;
-    public $msg;
-
-
-    // space that we can use the repository from
     protected $model;
+
 
     public function __construct(OrderRepositoryInterface $model)
     {
@@ -43,21 +40,11 @@ class ActivityController extends Controller
     public function index()
     {
 
-
-        $paymentAnswerHtml = '';
-        $callbackHtml = '';
-        $transferToPortHtml = '';
-        $callbackResultHtml = '';
-        $verifyTansactionHtml = '';
-
         return view('index')
             ->with(
                 [
-                    'paymentAnswerHtml' => $paymentAnswerHtml,
-                    'transferToPortHtml' => $transferToPortHtml,
-                    'callbackHtml' => $callbackHtml,
-                    'callbackResultHtml' => $callbackResultHtml,
-                    'verifyTansactionHtml' => $verifyTansactionHtml,
+                    'paymentAnswerHtml' => '',
+
                 ]
             );
     }
@@ -70,6 +57,7 @@ class ActivityController extends Controller
      */
     public function show($id)
     {
+
         $order = Order::findOrFail($id);
 
         $status = json_decode($order->activities->where('step', 'return')->last()->response)->status;
@@ -131,37 +119,14 @@ class ActivityController extends Controller
     }
 
 
-    public function header($api_key, $sandbox)
-    {
-
-        $header = [
-            'Content-Type' => 'application/json',
-            "X-API-KEY" => $api_key,
-            'X-SANDBOX' => $sandbox
-        ];
-        return $header;
-    }
-
-    public function requestHttp($params, $header, $url)
-    {
-
-
-        $client = new Client();
-        $response = $client->request('POST', $url,
-            [
-                'json' => $params,
-                'headers' => $header,
-                'http_errors' => false
-            ]);
-
-        return $response;
-
-    }
-
-
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Throwable
+     */
     public function store(Request $request)
     {
-
 
         $order = $this->model->create($request->toArray());
         $params = [
@@ -182,7 +147,6 @@ class ActivityController extends Controller
         $header = $this->header($request->api_key, $request->sandbox);
         $response = $this->requestHttp($params, $header, 'https://api.idpay.ir/v1.1/payment');
 
-
         $activity = [
             'http_code' => $response->getStatusCode(),
             'request' => json_encode($params),
@@ -193,20 +157,15 @@ class ActivityController extends Controller
 
         $activity = $this->model->createActivity($activity, $order->id);
 
-
         if ($response->getStatusCode() == 201) {
-
             $this->model->update(['return_id' => json_decode($response->getBody())->id], $order->id);
-
             $activityArray = Fractal::create()->item($activity, new ActivitiyView())
                 ->toArray();
-
 
             $html = view('partial.paymentAnswer')->with([
                 'activity' => $activityArray['data']['view'],
                 'http_code' => $response->getStatusCode(),
             ])->render();
-
 
             $transferToPortHtml = view('partial.transferToPort')->with([
                 'link' => json_decode($activityArray['data']['view']['response'])->link,
@@ -236,9 +195,13 @@ class ActivityController extends Controller
     }
 
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function payment(Request $request, $id)
     {
-
         $order = Order::find($id);
         $activity = [
             'step' => 'redirect',
@@ -246,8 +209,8 @@ class ActivityController extends Controller
             'response' => json_encode([]),
         ];
 
-        $activity = $this->model->createActivity($activity, $order->id);
-        return \response()->json(['status' => 'OK', 'link' => $request->link, 'message' => 'salam khosh amadi']);
+        $this->model->createActivity($activity, $order->id);
+        return \response()->json(['status' => 'OK', 'link' => $request->link, 'message' => '']);
     }
 
 
@@ -271,60 +234,12 @@ class ActivityController extends Controller
 
 
     /**
-     * @param $status
-     * @return string
-     */
-    public function get_status_description($status)
-    {
-
-        switch ($status) {
-            case 1:
-                $this->msg = 'پرداخت انجام نشده است. ';
-                break;
-            case 2:
-                $this->msg = '.پرداخت ناموفق بوده است';
-                break;
-            case 3:
-                $this->msg = '.خطا رخ داده است';
-                break;
-            case 4:
-                $this->msg = 'بلوکه شده.';
-                break;
-            case 5:
-                $this->msg = 'برگشت به پرداخت کننده.';
-                break;
-            case 6:
-                $this->msg = 'برگشت خورده سیستمی.';
-                break;
-            case 7:
-                $this->msg = 'انصراف از پرداخت.';
-                break;
-            case 8:
-                $this->msg = 'به درگاه پرداخت منتقل شد.';
-                break;
-            case 10:
-                $this->msg = '.در انتظار تایید پرداخت';
-                break;
-            case 100:
-                $this->msg = '.پرداخت تایید شده است';
-                break;
-            case 101:
-                $this->msg = 'پرداخت قبلا تایید شده است.';
-                break;
-
-            case 200:
-                $this->msg = 'به دریافت کننده واریز شد';
-                break;
-            case 405:
-                $this->msg = 'تایید پرداخت امکان پذیر نیست.';
-                break;
-
-        }
-
-    }
-
-    /*
+     * @param Request $request
+     * @param $id
      * connect to verify API IDPay and check double spendding
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Throwable
      */
     public function verify(Request $request, $id)
     {
@@ -351,10 +266,8 @@ class ActivityController extends Controller
 
         $activity = $this->model->createActivity($activity, $order->id);
 
-
         $activityArray = Fractal::create()->item($activity, new VerifyTransformer())
             ->toArray();
-
 
         $html = view('partial.verifyResult')->with([
             'response' => $activityArray['data']['view']['response'],
