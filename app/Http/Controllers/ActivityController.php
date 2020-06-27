@@ -8,6 +8,7 @@ use App\Repositories\OrderRepositoryInterface;
 use App\Transformers\ActivitiyView;
 use App\Transformers\CallBackResultArry;
 use App\Transformers\FaildActivitiyView;
+use App\Transformers\VerifyTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rules\In;
@@ -21,7 +22,6 @@ class ActivityController extends Controller
 {
 
 
-    private $paymentEndpoint = 'https://api.idpay.ir/v1.1/payment';
     private $calbackUrl;
     public $msg;
 
@@ -50,7 +50,7 @@ class ActivityController extends Controller
         $callbackResultHtml = '';
         $verifyTansactionHtml = '';
 
-        return view('show')
+        return view('index')
             ->with(
                 [
                     'paymentAnswerHtml' => $paymentAnswerHtml,
@@ -70,44 +70,42 @@ class ActivityController extends Controller
      */
     public function show($id)
     {
-
-
         $order = Order::findOrFail($id);
 
         $status = json_decode($order->activities->where('step', 'return')->last()->response)->status;
         if ((int)$status !== 10) {
             $this->get_status_description($status);
-            Session::flash('status', $this->msg . "کدخطا" . "($status)");
+            Session::flash('status', $this->msg . "(" . "وضعیت:" . "$status)");
         }
+
         $activityCreate = $order->activities->where('step', 'create')->last();
         $callbackResult = $order->activities->where('step', 'return')->last();
 
-        $activityCreate = Fractal::create()->item($activityCreate, new ActivitiyView())
+        $activityCreateArray = Fractal::create()->item($activityCreate, new ActivitiyView())
             ->toArray();
 
 
         $paymentAnswerHtml = view('partial.paymentAnswer')->with([
-            'activity' => $activityCreate,
+            'activity' => $activityCreateArray['data']['view'],
+            'http_code' => $activityCreate->http_code,
         ])->render();
 
 
         $transferToPortHtml = view('partial.transferToPort')->with([
-            'link' => $activityCreate['data']['link'],
+            'link' => json_decode($activityCreateArray['data']['view']['response'])->link,
             'order_id' => $order->id,
         ])->render();
 
-
         $callbackHtml = view('partial.callback')->with([
-            'url' => json_decode($activityCreate['data']['response'])->link,
+            'url' => json_decode($activityCreateArray['data']['view']['response'])->link,
         ])->render();
-
 
         $callbackResultArray = Fractal::create()->item($callbackResult->response, new CallBackResultArry())
             ->toArray();
 
         $callbackResultHtml = view('partial.callbackResult')->with([
             'callbackResult' => $callbackResultArray['data'],
-            'step_tome'=>$callbackResult->created_at->format('Y-m-d h-m-s'),
+            'step_tome' => $callbackResult->created_at->format('Y-m-d h-m-s'),
             'url' => route('callback'),
         ])->render();
 
@@ -133,17 +131,39 @@ class ActivityController extends Controller
     }
 
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Throwable
-     */
+    public function header($api_key, $sandbox)
+    {
+
+        $header = [
+            'Content-Type' => 'application/json',
+            "X-API-KEY" => $api_key,
+            'X-SANDBOX' => $sandbox
+        ];
+        return $header;
+    }
+
+    public function requestHttp($params, $header, $url)
+    {
+
+
+        $client = new Client();
+        $response = $client->request('POST', $url,
+            [
+                'json' => $params,
+                'headers' => $header,
+                'http_errors' => false
+            ]);
+
+        return $response;
+
+    }
+
+
     public function store(Request $request)
     {
 
-        $order = $this->model->create($request->toArray());
 
+        $order = $this->model->create($request->toArray());
         $params = [
             'order_id' => $order->id,
             'amount' => $request->amount,
@@ -155,31 +175,20 @@ class ActivityController extends Controller
             'status' => 'processing',
             'reseller' => $request->reseller,
             'API_KEY' => $request->api_key,
-            'sandbox' => $request->sandbox,
-
-        ];
-
-        $header = [
-            'Content-Type' => 'application/json',
-            "X-API-KEY" => $request->api_key,
-            'X-SANDBOX' => $request->sandbox
+            'sandbox' => (int)$request->sandbox,
         ];
 
 
-        $client = new Client();
-        $response = $client->request('POST', $this->paymentEndpoint,
-            [
-                'json' => $params,
-                'headers' => $header,
-                'http_errors' => false
-            ]);
+        $header = $this->header($request->api_key, $request->sandbox);
+        $response = $this->requestHttp($params, $header, 'https://api.idpay.ir/v1.1/payment');
 
-        $responseBody = json_decode($response->getBody());
+
         $activity = [
-            'step' => 'create',
             'http_code' => $response->getStatusCode(),
             'request' => json_encode($params),
-            'response' => json_encode($responseBody),
+            'response' => $response->getBody(),
+            'step' => 'create',
+
         ];
 
         $activity = $this->model->createActivity($activity, $order->id);
@@ -187,36 +196,39 @@ class ActivityController extends Controller
 
         if ($response->getStatusCode() == 201) {
 
-            $this->model->update(['return_id' => $responseBody->id], $order->id);
-            $activity = Fractal::create()->item($activity, new ActivitiyView())
+            $this->model->update(['return_id' => json_decode($response->getBody())->id], $order->id);
+
+            $activityArray = Fractal::create()->item($activity, new ActivitiyView())
                 ->toArray();
 
-            $paymentAnswer = view('partial.paymentAnswer')->with([
-                'activity' => $activity,
+
+            $html = view('partial.paymentAnswer')->with([
+                'activity' => $activityArray['data']['view'],
+                'http_code' => $response->getStatusCode(),
             ])->render();
 
-            $transferToPort = view('partial.transferToPort')->with([
-                'link' => $activity['data']['link'],
+
+            $transferToPortHtml = view('partial.transferToPort')->with([
+                'link' => json_decode($activityArray['data']['view']['response'])->link,
                 'order_id' => $order->id,
-                'callBackUrl' => $this->calbackUrl,
+
             ])->render();
-            return \response()->json(['status' => 'OK', 'paymentAnswer' => $paymentAnswer, 'transferToPort' => $transferToPort, 'message' => 'salam khosh amadi']);
+
+            return \response()->json(['status' => 'OK', 'paymentAnswer' => $html, 'transferToPort' => $transferToPortHtml, 'message' => '']);
+
 
         } else {
 
 
-            $activity = Fractal::create()->item($activity, new FaildActivitiyView())
+            $activityArray = Fractal::create()->item($activity, new FaildActivitiyView())
                 ->toArray();
-
-
-            $paymentAnswer = view('partial.paymentAnswer')->with([
-                'activity' => $activity,
+            $html = view('partial.paymentAnswer')->with([
+                'activity' => $activityArray['data']['view'],
+                'http_code' => $response->getStatusCode(),
 
             ])->render();
 
-
-            return \response()->json(['status' => 'ERROR', 'paymentAnswer' => $paymentAnswer, 'message' => 'salam khosh amadi']);
-
+            return \response()->json(['status' => 'ERROR', 'paymentAnswer' => $html, 'message' => '']);
 
         }
 
@@ -245,7 +257,6 @@ class ActivityController extends Controller
     public function callback(Request $request)
     {
 
-
         $activity = array(
             'order_id' => $request['order_id'],
             'step' => 'return',
@@ -253,11 +264,11 @@ class ActivityController extends Controller
             'response' => json_encode($request->all())
         );
 
-
         $this->model->createActivity($activity, $request->order_id);
         return redirect()->route('show', $request['order_id']);
 
     }
+
 
     /**
      * @param $status
@@ -318,52 +329,41 @@ class ActivityController extends Controller
     public function verify(Request $request, $id)
     {
 
-
-        $order = Order::find($id);
-
-
+        $order = Order::findOrFail($id);
         $params = [
             'id' => json_decode($order->activities->where('step', 'create')->last()->response)->id,
             'order_id' => $order->id,
+            'API_KEY' => json_decode($order->activities->where('step', 'create')->last()->request)->API_KEY,
+            'sandbox' => (int)$order['sandbox'],
         ];
 
-
-        $header = [
-            'Content-Type' => 'application/json',
-            'X-API-KEY' => json_decode($order->activities->where('step', 'create')->last()->request)->API_KEY,
-            'X-SANDBOX' => $order['sandbox']
-        ];
+        $header = $this->header(json_decode($order->activities->where('step', 'create')->last()->request)->API_KEY, $order['sandbox']);
+        $response = $this->requestHttp($params, $header, 'https://api.idpay.ir/v1.1/payment/verify');
 
 
-        $client = new Client();
-        $response = $client->request('POST', 'https://api.idpay.ir/v1.1/payment/verify',
-            [
-                'json' => $params,
-                'headers' => $header,
-                'http_errors' => false
-            ]);
-
-
-        $responseBody = json_decode($response->getBody());
-        unset($request['http_errors']);
-
-        $activity = array(
-            'step' => 'verify',
+        $activity = [
+            'http_code' => $response->getStatusCode(),
             'request' => json_encode($params),
-            'response' => json_encode($responseBody)
-        );
+            'response' => $response->getBody(),
+            'step' => 'verify',
+
+        ];
 
         $activity = $this->model->createActivity($activity, $order->id);
 
-        $html = view('test')
-            ->with([
-                'response' => $activity['response'],
-                'request' => $activity['request'],
-                'status' => $response->getStatusCode(),
-            ])
-            ->render();
 
-        return \response()->json(['status' => 'OK', 'data' => $html, 'message' => 'salam khosh amadi']);
+        $activityArray = Fractal::create()->item($activity, new VerifyTransformer())
+            ->toArray();
+
+
+        $html = view('partial.verifyResult')->with([
+            'response' => $activityArray['data']['view']['response'],
+            'request' => $activityArray['data']['view']['request'],
+            'http_code' => $response->getStatusCode(),
+            'step_time' => $activityArray['data']['view']['step_time'],
+        ])->render();
+
+        return \response()->json(['status' => 'OK', 'data' => $html, 'message' => '']);
 
     }
 

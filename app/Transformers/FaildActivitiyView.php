@@ -4,6 +4,7 @@ namespace App\Transformers;
 
 use App\Activity;
 use League\Fractal\TransformerAbstract;
+use Verta;
 
 class FaildActivitiyView extends TransformerAbstract
 {
@@ -25,6 +26,7 @@ class FaildActivitiyView extends TransformerAbstract
         //
     ];
 
+
     /**
      * A Fractal transformer.
      *
@@ -33,33 +35,8 @@ class FaildActivitiyView extends TransformerAbstract
     public function transform($activity)
     {
 
-//        dd($activity);
-
-
-        $result = $this->transform2($activity);
-
-        return [
-
-
-            'id' => $activity['id'],
-            'request' => json_encode($result),
-            'response' => $activity['response'],
-            'order_id' => $activity['order_id'],
-            'http_code' => $activity['http_code'],
-            'step' => $activity['step'],
-            'link' => '#',
-
-
-        ];
-    }
-
-
-    public function transform2($activity)
-    {
-
 
         $params = json_decode($activity['request']);
-
 
         $header = [
             'Content-Type' => 'application/json',
@@ -70,11 +47,27 @@ class FaildActivitiyView extends TransformerAbstract
 
         return [
 
-            'url' => 'https://api.idpay.ir/v1.1/payment',
-            'header' => $header,
-            'params' => $this->params($params)
+            'view' => [
+                'request' => json_encode([
+                    'url' => 'https://api.idpay.ir/v1.1/payment',
+                    'header' => $header,
+                    'params' => $this->params($params)
+                ]),
+                'response' => $activity['response'],
+                'step_time' => new Verta($activity['created_at']),
+
+
+
+            ],
+
+
         ];
+
+
     }
+
+
+
 
 
     public function params($params)
@@ -93,9 +86,6 @@ class FaildActivitiyView extends TransformerAbstract
             "status" => $params->status,
             "reseller" => $params->reseller,
         ];
-
-
     }
-
 
 }

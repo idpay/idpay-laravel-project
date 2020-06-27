@@ -34,11 +34,8 @@
                 --timing;
                 $('#timing').html('درحال انتقال به درگاه ' + timing);
                 if (timing === 0) {
-                    // alert('Too late! Try again');
                     clearInterval(myTimer);
-
-
-                    //
+                    loadWaiting()
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -46,7 +43,6 @@
                     });
                     jQuery.ajax({
                         url: url,
-
 
                         method: 'post',
                         data: form.serialize(),

@@ -10,9 +10,9 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
     <script src="{{ asset('/assets/files/jquery/jquery-2.1.1.min.js') }}"></script>
-    <script src="{{ asset('/assets/files/bootstrap/css/bootstrap.min.js') }}"></script>
+{{--    <script src="{{ asset('/assets/files/bootstrap/css/bootstrap.min.js') }}"></script>--}}
     <link href="{{ asset('/assets/files/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
-    <link href="{{ asset('/bootstrap/files/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+{{--    <link href="{{ asset('/bootstrap/files/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">--}}
     <script src="{{ asset('/assets/files/common.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/main.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main-front.css') }}">
@@ -59,11 +59,37 @@
     </p>
 </footer>
 
+
+
+<script>
+    function loadWaiting() {
+
+        var div = $("#loadWaiting");
+
+        div.animate({width: '100%', opacity: '1'}, "100");
+        // div.animate({width: '0', opacity: '0'}, "fast");
+
+
+    }
+
+    function stopLoadWaiting() {
+
+        var div = $("#loadWaiting");
+        div.stop();
+        div.animate({width: '0', opacity: '0'}, "fast");
+
+
+    }
+
+
+</script>
 </body>
 
 
 
 <div class="row" id="loadWaiting"></div>
+
+
 
 
 </html>

@@ -44,22 +44,33 @@
 
 
 
+    <div class="row" hidden id="transferToGetWay">
+        <blockquote class="blockquote text-center titleAction" id="titleTranserToGetway">
+            <p class="mb-0">انتقال به درگاه</p>
+            <footer class="blockquote-footer"><cite title="Source Title">
+                </cite></footer>
+        </blockquote>
 
-    <div class="row">
 
-        {!! $callbackResultHtml !!}
+        <div class="col-lg-6" id="transferToPort">
+
+            {{--{!! $transferToPortHtml !!}--}}
+
+        </div>
+
+        <div class="col-lg-6" id="transferToPortWait">
+
+            {{--{!! $callbackHtml !!}--}}
+
+
+            <div id="timing" class="en"></div>
+            <div id="msg" class="en" style="display: none">Redirect to {{route('callback')}}</div>
+
+
+        </div>
 
     </div>
 
-
-    <div class="row">
-
-
-
-            {!! $verifyTansactionHtml !!}
-
-
-    </div>
 
 
 
@@ -130,27 +141,6 @@
 
 
     {{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--}}
-    <script>
-        function loadWaiting() {
 
-            var div = $("#loadWaiting");
-
-            div.animate({width: '100%', opacity: '1'}, "100");
-            // div.animate({width: '0', opacity: '0'}, "fast");
-
-
-        }
-
-        function stopLoadWaiting() {
-
-            var div = $("#loadWaiting");
-            div.stop();
-            div.animate({width: '0', opacity: '0'}, "fast");
-
-
-        }
-
-
-    </script>
 
 @endsection
