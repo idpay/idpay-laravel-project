@@ -1,0 +1,83 @@
+
+@font-face { font-family: 'iranyekan'; src: url('../fonts/iranyekanwebregular.eot'); src: url('../webfonts/iranyekanwebregular.eot?#iefix') format('embedded-opentype'),  /* IE6-8 */ url('../fonts/iranyekanwebregular.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/ url('../fonts/iranyekanwebregular.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/ url('../fonts/iranyekanwebregular.ttf') format('truetype'); }
+
+@font-face { font-family: 'iranyekan-light'; src: url('../fonts/iranyekanweblight.eot'); src: url('../fonts/iranyekanweblight.eot?#iefix') format('embedded-opentype'),  /* IE6-8 */ url('../fonts/iranyekanweblight.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/ url('../webfonts/iranyekanweblight.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/ url('../fonts/iranyekanweblight.ttf') format('truetype'); }
+
+
+.getbowtied_get_this_theme {
+    bottom: 18px;
+    right: 75px;
+}
+.getbowtied_get_this_theme {
+    display: inline-block;
+    background-color: #729c29;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 99999;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    box-shadow: -6.772px 8.668px 16px 0px rgba(28, 30, 35, 0.15);
+    -webkit-box-shadow: -6.772px 8.668px 16px 0px rgba(28, 30, 35, 0.15);
+    -moz-box-shadow: -6.772px 8.668px 16px 0px rgba(28, 30, 35, 0.15);
+    transition: all 1s ease;
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    animation-name: animFadeUp;
+    animation-fill-mode: both;
+    animation-duration: 0.4s;
+    animation-timing-function: ease;
+    animation-delay: 1.5s;
+    -webkit-animation-name: animFadeUp;
+    -webkit-animation-fill-mode: both;
+    -webkit-animation-duration: 0.4s;
+    -webkit-animation-timing-function: ease;
+    -webkit-animation-delay: 1.5s;
+    -moz-animation-name: animFadeUp;
+    -moz-animation-fill-mode: both;
+    -moz-animation-duration: 0.4s;
+    -moz-animation-timing-function: ease;
+    -moz-animation-delay: 1.5s;
+    -o-animation-name: animFadeUp;
+    -o-animation-fill-mode: both;
+    -o-animation-duration: 0.4s;
+    -o-animation-timing-function: ease;
+    -o-animation-delay: 1.5s;
+}
+.getbowtied_get_this_theme img.envato-logo {
+    position: absolute;
+    right: -3px;
+    bottom: -7px;
+    background: #7cb442;
+    border-radius: 50%;
+    padding: 5px;
+}
+.getbowtied_get_this_theme:hover{color:#fff;background:#83b231}
+
+       .ibtn {
+       background-color: #57D38C;
+       border-radius: 6px;
+       border: 0;
+       color: #fff;
+       -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0.16);
+       box-shadow: 0 0 0 rgba(0, 0, 0, 0.16);
+       text-decoration:none;
+       padding: 10px 28px;
+       font-size: 14px;
+       cursor: pointer;
+
+   }
+   .ibtn:hover {
+    text-decoration:none;
+    color: #ffffff;
+    box-shadow: 0 5px 6px rgba(0, 0, 0, 0.16);
+  }
+   .ibtn:focus {
+    -webkit-box-shadow: 0 5px 6px rgba(0, 0, 0, 0.16);
+    box-shadow: 0 5px 6px rgba(0, 0, 0, 0.16);
+    text-decoration:none;
+  }
+   
+
