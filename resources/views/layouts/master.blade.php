@@ -31,25 +31,33 @@
     </style>
 
 
-
 </head>
 
 
 <body>
 
 {{--<script>--}}
-    {{--// for success - green box--}}
-    {{--toastr.success('Success messages');--}}
+{{--// for success - green box--}}
+{{--toastr.success('Success messages');--}}
 {{--</script>--}}
 
-<header id="header" class="navbar navbar-static-top">
-    <div id="header-logo">
-        <a href="{{route('index')}}">
-            <img class="logo" typeof="foaf:Image" src="{{asset('image/logo-orange.svg')}}" alt="IDPay logo">
-        </a>
+<header id="header" class="navbar navbar-static-top row">
+
+    <div class='col-lg-2'></div>
+
+    <div class='col-lg-8'>
+        <div id="header-logo">
+            <a href="{{route('index')}}">
+                <img class="logo" typeof="foaf:Image" src="{{asset('image/logo-orange.svg')}}" alt="IDPay logo">
+            </a>
+        </div>
+
+        <div id="header-title">
+           <h3>آزمایشگاه سرویس پرداخت آیدی‌ پی</h3>
+        </div>
     </div>
 
-
+    <div class='col-lg-2'></div>
 
 
 </header>
@@ -63,11 +71,10 @@
 
 <footer id="footer">
 
-    <p style="text-align: center;  font-size:12px; padding-top:10px; " >
+    <p style="text-align: center;  font-size:12px; padding-top:10px; ">
         <a href="https://idpay.ir/" target="_blank" style="color:#fe681e">IDPay</a>
     </p>
 </footer>
-
 
 
 <script>
@@ -95,10 +102,7 @@
 </body>
 
 
-
 <div class="row" id="loadWaiting"></div>
-
-
 
 
 </html>

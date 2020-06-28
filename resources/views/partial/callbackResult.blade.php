@@ -9,7 +9,7 @@
         درخواست
     </div>
     <div class="col-lg-6" style="font-size: 14px; text-align: left">
-        زمان
+        زمان:
         {{$step_tome}}
     </div>
 </div>

@@ -45,7 +45,7 @@ class CallBackResultArry extends TransformerAbstract
                 'hashed_card_no'=>$item->hashed_card_no,
 
             ],
-            'CONTENT_TYPE'=>'CONTENT_TYPE:'.$item->CONTENT_TYPE,
+            'CONTENT_TYPE'=>'Content-Type: '.$item->CONTENT_TYPE,
 
 
         ];

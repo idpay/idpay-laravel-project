@@ -44,6 +44,8 @@ class FaildActivitiyView extends TransformerAbstract
             'X-SANDBOX' => (int)$params->sandbox
         ];
 
+        $created = new Verta($activity['created_at']);
+
 
         return [
 
@@ -54,7 +56,7 @@ class FaildActivitiyView extends TransformerAbstract
                     'params' => $this->params($params)
                 ]),
                 'response' => $activity['response'],
-                'step_time' => new Verta($activity['created_at']),
+                'step_time' => $created->format('Y-m-d H:i:s'),
 
 
 

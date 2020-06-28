@@ -38,7 +38,13 @@ body::after{ content:''; display:block; height:100px; }
 }
 
 #header-logo {
-    display: inline
+    display: inline;
+    float: left;
+}
+#header-title {
+    display: inline;
+    float: right;
+    color: #fff;
 }
 
 .title {
@@ -292,4 +298,14 @@ pre {
     text-align: left;
 }
 
+hr{
+    border-color: #ccc;
 
+}
+
+
+.response-title span{
+
+    font-size: 12px;
+
+}

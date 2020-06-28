@@ -45,6 +45,9 @@ class ActivitiyView extends TransformerAbstract
         ];
 
 
+        $created = new Verta($activity['created_at']);
+
+
         return [
 
             'view' => [
@@ -54,7 +57,7 @@ class ActivitiyView extends TransformerAbstract
                     'params' => $this->params($params)
                 ]),
                 'response' => $activity['response'],
-                'step_time' => new Verta($activity['created_at']),
+                'step_time' => $created->format('Y-m-d H:i:s'),
 
 
             ],

@@ -6,14 +6,17 @@
         درخواست
     </div>
     <div class="col-lg-6" style="font-size: 14px; text-align: left">
-        زمان
+        زمان:
         {{$activity['step_time']}}
     </div>
 </div>
 
 <div class="col-lg-12">
     <pre class="ltr"><code id="GFG_DOWN" class="language-json json-response"></code></pre>
-    <p>پاسخ(کد وضعیت پاسخ:{{$http_code}})</p>
+    <p class="response-title">
+        پاسخ
+        <span>(کد وضعیت پاسخ: {{$http_code}})</span>
+    </p>
     <pre class="ltr"><code id="GFG_DOWN2" class="language-json json-response"></code></pre>
 
 
