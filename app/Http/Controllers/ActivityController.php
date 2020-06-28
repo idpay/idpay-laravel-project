@@ -35,101 +35,6 @@ class ActivityController extends MainController
 
 
     /**
-     * @return $this
-     */
-    public function index()
-    {
-
-        return view('index')
-            ->with(
-                [
-                    'paymentAnswerHtml' => '',
-
-                ]
-            );
-    }
-
-
-    /**
-     * @param Order $order
-     * @return $this|void
-     * @throws \Throwable
-     */
-    public function show(Order $order)
-    {
-        $callbackResultHtml = null;
-        $verifyResultHtml = null;
-        $verifyRequestHtml = null;
-        $activityCreate = $order->activities->where('step', 'create')->last();
-        $redirectResult = $order->activities->where('step', 'redirect')->last();
-        $callbackResult = $order->activities->where('step', 'return')->last();
-        $verifyResult = $order->activities->where('step', 'verify')->last();
-
-        if ($activityCreate == null or $redirectResult == null)
-            return abort(404);
-
-
-        $activityCreateArray = Fractal::create()->item($activityCreate, new ActivitiyView())
-            ->toArray();
-
-        $paymentAnswerHtml = view('partial.paymentAnswer')->with([
-            'activity' => $activityCreateArray['data']['view'],
-            'http_code' => $activityCreate->http_code,
-        ])->render();
-
-        $transferToPortHtml = view('partial.transferToPort')->with([
-            'link' => json_decode($activityCreateArray['data']['view']['response'])->link,
-            'order_id' => $order->id,
-        ])->render();
-
-        $callbackHtml = view('partial.callback')->with([
-            'url' => json_decode($activityCreateArray['data']['view']['response'])->link,
-            'step_date' => new Verta($redirectResult->created_at),
-        ])->render();
-
-
-        if ($callbackResult !== null) {
-            $status = json_decode($order->activities->where('step', 'return')->last()->response)->status;
-            if ((int)$status !== 10) {
-                $this->get_status_description($status);
-                Session::flash('status', $this->msg . "(" . "وضعیت:" . "$status)");
-            }
-
-            $callbackResultArray = Fractal::create()->item($callbackResult->response, new CallBackResultArry())
-                ->toArray();
-
-            $callbackResultHtml = view('partial.callbackResult')->with([
-                'callbackResult' => $callbackResultArray['data'],
-                'step_tome' => $callbackResult->created_at->format('Y-m-d h-m-s'),
-                'url' => route('callback'),
-            ])->render();
-            $verifyRequestHtml = view('partial.verifyRequest')->with(['order_id' => $order->id,])->render();
-            if ($verifyResult !== null) {
-                $verifyResultArray = Fractal::create()->item($verifyResult, new VerifyTransformer())
-                    ->toArray();
-                $verifyResultHtml = view('partial.verifyResult')->with([
-                    'response' => $verifyResultArray['data']['view']['response'],
-                    'request' => $verifyResultArray['data']['view']['request'],
-                    'http_code' => $verifyResult->http_code,
-                    'step_time' => $verifyResultArray['data']['view']['step_time'],
-                ])->render();
-            }
-        }
-        return view('show')->with(
-            [
-                'paymentAnswerHtml' => $paymentAnswerHtml,
-                'transferToPortHtml' => $transferToPortHtml,
-                'callbackHtml' => $callbackHtml,
-                'callbackResultHtml' => $callbackResultHtml,
-                'verifyRequestHtml' => $verifyRequestHtml,
-                'verifyResultHtml' => $verifyResultHtml,
-                'order' => $order,
-            ]
-        );
-    }
-
-
-    /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -186,7 +91,7 @@ class ActivityController extends MainController
 
             ])->render();
 
-            return \response()->json(['status' => 'OK', 'paymentAnswer' => $html, 'transferToPort' => $transferToPortHtml, 'message' => '']);
+            return \response()->json(['status' => 'OK', 'paymentAnswer' => $html, 'transferToPort' => $transferToPortHtml, 'message' => 'تراکنش شما ایجاد شد.']);
 
 
         } else {
@@ -200,7 +105,7 @@ class ActivityController extends MainController
 
             ])->render();
 
-            return \response()->json(['status' => 'ERROR', 'paymentAnswer' => $html, 'message' => '']);
+            return \response()->json(['status' => 'ERROR', 'paymentAnswer' => $html, 'message' => 'تراکنش شما ایجاد نشد.']);
 
         }
 
@@ -223,7 +128,7 @@ class ActivityController extends MainController
         ];
 
         $this->model->createActivity($activity, $order->id);
-        return \response()->json(['status' => 'OK', 'link' => $request->link, 'message' => '']);
+        return \response()->json(['status' => 'OK', 'link' => $request->link, 'message' => 'ممنون از انتخاب شما']);
     }
 
 
@@ -284,16 +189,17 @@ class ActivityController extends MainController
         $activityArray = Fractal::create()->item($activity, new VerifyTransformer())
             ->toArray();
 
+        $http_code = $response->getStatusCode();
 
         $html = view('partial.verifyResult')->with([
             'response' => $activityArray['data']['view']['response'],
             'request' => $activityArray['data']['view']['request'],
-            'http_code' => $response->getStatusCode(),
+            'http_code' => $http_code,
             'step_time' => $activityArray['data']['view']['step_time'],
         ])->render();
 
 
-        return \response()->json(['status' => 'OK', 'data' => $html, 'message' => '']);
+        return \response()->json(['status' => 'OK', 'data' => $html, 'message' => "کد وضعیت پاسخ: $http_code "]);
 
     }
 

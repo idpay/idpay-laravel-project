@@ -18,7 +18,8 @@
     <link rel="stylesheet" href="{{ asset('css/main-front.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fontiran.css') }}">
 
-    {{--<link rel="stylesheet" href="{{ asset('js/toastr.min.js') }}">--}}
+    <link href="{{asset('assets/toastr/toastr.min.css')}}" rel="stylesheet"/>
+    <script src="{{asset('assets/toastr/toastr.min.js')}}"></script>
 
 
 
@@ -35,11 +36,6 @@
 
 
 <body>
-
-{{--<script>--}}
-{{--// for success - green box--}}
-{{--toastr.success('Success messages');--}}
-{{--</script>--}}
 
 <header id="header" class="navbar navbar-static-top row">
 
@@ -99,6 +95,11 @@
 
 
 </script>
+
+
+
+
+
 </body>
 
 

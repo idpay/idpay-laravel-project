@@ -12,6 +12,7 @@
 
 
 
+
     <div class="row">
         <blockquote class="blockquote text-center titleAction">
             <p class="mb-0">ایجاد تراکنش</p>
@@ -139,6 +140,9 @@
                 data: form.serialize(),
                 success: function (result) {
                     jQuery('#verifyResult').html(result.data);
+
+                    toastr.options.rtl = true;
+                    toastr.info(result.message, '');
                     stopLoadWaiting()
 
 
@@ -148,6 +152,7 @@
                 }
             });
         });
+
 
 
     </script>

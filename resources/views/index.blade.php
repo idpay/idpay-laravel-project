@@ -118,10 +118,16 @@
                         // $("#snedPaymentApi :input").prop("disabled", true);
                         $("#" + submitButton).attr("disabled", false);
 
+                        toastr.options.rtl = true;
+                        toastr.success(result.message, '');
+
 
 
                     } else if (result.status == 'ERROR') {
                         jQuery('#paymentResult').html(result.paymentAnswer);
+                        toastr.options.rtl = true;
+                        toastr.error(result.message, '');
+
                         $("#" + submitButton).attr("disabled", false);
                         stopLoadWaiting()
 
@@ -135,7 +141,6 @@
                 }
             });
         });
-
 
     </script>
 
