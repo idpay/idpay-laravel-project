@@ -44,7 +44,7 @@
 
 <header id="header" class="navbar navbar-static-top">
     <div id="header-logo">
-        <a href="">
+        <a href="{{route('index')}}">
             <img class="logo" typeof="foaf:Image" src="{{asset('image/logo-orange.svg')}}" alt="IDPay logo">
         </a>
     </div>

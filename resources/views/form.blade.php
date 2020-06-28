@@ -20,9 +20,6 @@
             </select>
         </div>
     </div>
-
-    {{--Todo border--}}
-
     <div class="form-group">
         <label class="control-label col-sm-3" for="{{__('sandbox.name')}}">{{__('sandbox.name')}}</label>
         <div class="col-sm-9">
