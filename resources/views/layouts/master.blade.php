@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="{{ asset('css/main-front.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fontiran.css') }}">
 
+    {{--<link rel="stylesheet" href="{{ asset('js/toastr.min.js') }}">--}}
+
 
 
 
@@ -34,6 +36,11 @@
 
 
 <body>
+
+{{--<script>--}}
+    {{--// for success - green box--}}
+    {{--toastr.success('Success messages');--}}
+{{--</script>--}}
 
 <header id="header" class="navbar navbar-static-top">
     <div id="header-logo">
