@@ -1,39 +1,70 @@
-body{
-    background:#fff;
+html{ height:100%; }
+
+
+
+body {
+    background: #fff;
     font-family: "Tahoma" !important;
+    /*height:100%;*/
+    min-height:100%;
+    padding:0;
+    margin:0;
+    font-size: 16px;
+    position:relative;
 }
-#header{
-    background-color:#454545;
+body::after{ content:''; display:block; height:100px; }
+#footer{
+    position:absolute !important;
+    bottom:0 !important;
+    width:100% !important;
+    height:50px !important;
+    background:#454545;
+    text-align: center;
+    color: #fff;
+}
+
+
+#header {
+    background-color: #454545;
     padding: 30px 20px 30px 20px;
     display: block ruby;
 }
-#title-header{
+
+#title-header {
     font-size: 30px;
     width: 50%;
-    color:#fff;
+    color: #fff;
     text-align: left;
 }
 
-#header-logo{
-    display:inline
+#header-logo {
+    display: inline;
+    float: left;
 }
+#header-title {
+    display: inline;
+    float: right;
+    color: #fff;
+}
+
 .title {
     text-align: center;
     padding: 8px 0 8px 0;
     background-color: #ececec;
-    /*width: 60%;*/
-    /*margin-right: 20%;*/
+
     margin-right: 25px;
     margin-left: 25px;
     border: solid 1px #bdbdbd;
 }
+
 #form {
     padding: 50px 20px;
     border: solid 1px #bdbdbd;
     margin-right: 10px;
     margin-left: 10px;
 }
-button{
+
+button {
     background-color: #00e1e1;
     border-color: #58eaea;
     border-radius: 5px;
@@ -42,12 +73,14 @@ button{
     margin: 20px 45%;
     width: 25%;
 }
-.response{
+
+.response {
     padding: 50px 20px;
     border: solid 1px #bdbdbd;
     margin-right: 10px;
     margin-left: 10px;
 }
+
 #loader {
     position: fixed;
     left: 0px;
@@ -55,18 +88,224 @@ button{
     width: 100%;
     height: 100%;
     z-index: 9999;
-    /*background: url(https://smallenvelop.com/wp-content/uploads/2014/08/Preloader_11.gif) center no-repeat #fff;*/
 }
-body {
-    padding: 3rem;
-    font-size: 16px;
-}
+
+
 
 textarea {
     width: 100%;
     min-height: 30rem;
     font-family: "Lucida Console", Monaco, monospace;
     font-size: 1.3rem;
-height: auto;
+    height: auto;
     direction: ltr;
+}
+
+/*
+Mohammad Nabipoor
+*/
+
+.text-left {
+    text-align: left;
+}
+
+body {
+    background-color: #EEEEF5;
+
+}
+
+button,
+input,
+optgroup,
+select,
+textarea, .container, header, footer {
+    direction: rtl;
+}
+
+@media (min-width: 768px) {
+    .dl-horizontal dt {
+        float: right;
+    }
+}
+
+.col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
+    float: right;
+}
+
+@media (min-width: 768px) {
+    .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+        float: right;
+    }
+}
+
+@media (min-width: 992px) {
+    .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+        float: right;
+    }
+}
+
+@media (min-width: 1200px) {
+    .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12 {
+        float: right;
+    }
+}
+
+.dropdown-menu {
+    float: right;
+}
+
+.btn-group > .btn,
+.btn-group-vertical > .btn {
+    float: right;
+}
+
+.btn-toolbar .btn,
+.btn-toolbar .btn-group,
+.btn-toolbar .input-group {
+    float: right;
+}
+
+.btn-group > .btn-group {
+    float: right;
+}
+
+.input-group .form-control {
+    float: right;
+}
+
+.nav-tabs > li {
+    float: right;
+}
+
+.nav-pills > li {
+    float: right;
+}
+
+@media (min-width: 768px) {
+    .navbar-header {
+        float: right;
+    }
+}
+
+.navbar-brand {
+    float: right;
+}
+
+@media (min-width: 768px) {
+    .navbar-nav {
+        float: right;
+    }
+
+    .navbar-nav > li {
+        float: right;
+    }
+}
+
+@media (min-width: 768px) {
+    .navbar-text {
+        float: right;
+    }
+}
+
+.pagination > li > a,
+.pagination > li > span {
+    float: right;
+}
+
+.pager .previous > a,
+.pager .previous > span {
+    float: right;
+}
+
+.progress-bar {
+    float: right;
+}
+
+.popover {
+    text-align: right;
+}
+
+caption {
+    text-align: right;
+}
+
+th {
+    text-align: right;
+}
+
+.dropdown-menu {
+    text-align: right;
+}
+
+.tooltip {
+    text-align: right;
+}
+
+.en {
+    text-align: center;
+    /*float: left;*/
+    /*direction: ltr;*/
+
+}
+
+pre {
+    /*color: black !important;*/
+    font-size: 15px;
+    font-weight: bold;
+    direction: ltr;
+    color:#669900
+    /*background: #669916;*/
+
+
+}
+.json-response{
+
+    font-size:0.87rem;
+}
+
+.ltr{
+    direction: ltr;
+}
+
+/*4B476D*/
+.titleAction {
+    background-color: #4B476D;
+
+}
+
+.titleAction > p {
+    color: #E1E0E7;
+
+}
+
+/*E1E0E7*/
+#loadWaiting {
+    background: #4099DE;
+    height: 1%;
+    opacity: 0;
+    top: 0;
+    left: 15px;
+    width: 0;
+    position: fixed;
+    align-items: left !important;
+    text-align: left !important;
+    z-index: 10000;
+
+}
+
+.en-style{
+
+    text-align: left;
+}
+
+hr{
+    border-color: #ccc;
+
+}
+
+
+.response-title span{
+
+    font-size: 12px;
+
 }
