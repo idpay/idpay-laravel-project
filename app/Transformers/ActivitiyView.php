@@ -49,7 +49,7 @@ class ActivitiyView extends TransformerAbstract
 
             'view' => [
                 'request' => json_encode([
-                    'url' => 'https://api.idpay.ir/v1.1/payment',
+                    'url' => 'Post: https://api.idpay.ir/v1.1/payment',
                     'header' => $header,
                     'params' => $this->params($params)
                 ]),

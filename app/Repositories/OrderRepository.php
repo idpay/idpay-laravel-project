@@ -42,6 +42,8 @@ class OrderRepository implements OrderRepositoryInterface
                 'email' => $data['email'],
                 'amount' =>  $data['amount'],
                 'reseller' => $data['reseller'],
+                'callback' => $data['callback'],
+                'desc' => $data['desc'],
                 'status' => 'processing',
             ]
         );

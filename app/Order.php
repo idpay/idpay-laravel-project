@@ -26,6 +26,8 @@ class Order extends Model
         'reseller',
         'status',
         'return_id',
+        'callback',
+        'desc',
     ];
 
 

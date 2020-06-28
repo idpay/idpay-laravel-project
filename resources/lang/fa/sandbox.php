@@ -14,11 +14,13 @@ return [
     */
 
     'reseller' => 'کد نمایندگی',
-    'sanbox' => 'پرداخت آزمایشی',
-    'email' => 'ایمیل',
-    'name' => 'نام',
-    'amount' => 'قیمت',
-    'phone_number' => 'شماره تلفن',
-    'api_key' => 'APIKEY',
+    'sanbox' => 'Sandbox',
+    'email' => '‌ایمیل ‌‌پرداخت‌کننده',
+    'name' => 'نام ‌پرداخت‌کننده',
+    'amount' => 'مبلغ',
+    'phone_number' => 'موبایل ‌پرداخت کننده',
+    'api_key' => 'API-KEY',
+    'desc' => 'توضیحات',
+    'callback' => 'آدرس بازگشتی',
 
 ];

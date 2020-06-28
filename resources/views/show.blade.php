@@ -39,6 +39,55 @@
 
     </div>
 
+    <br>
+
+    <div class="row" id="transferToGetWay">
+        <blockquote class="blockquote text-center titleAction" id="titleTranserToGetway">
+            <p class="mb-0">انتقال به درگاه</p>
+            <footer class="blockquote-footer"><cite title="Source Title">
+                </cite></footer>
+        </blockquote>
+
+
+
+        <div class="col-lg-6">
+
+
+
+
+
+            <div class="col-lg-12">
+
+                <div class="col-lg-6">
+
+                </div>
+                <div class="col-lg-6" style="font-size: 14px; text-align: left">
+
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+            <div class="col-lg-12" id="transferToPort">
+
+                <p style="text-align: center">
+                    کاربر به درگاه به ادرس روبرو منتقل شد.
+                </p>
+            </div>
+
+
+        </div>
+
+        <div class="col-lg-6" id="transferToPortWait">
+
+
+            {!! $callbackHtml !!}
+
+
+        </div>
+
+    </div>
 
 
 
@@ -55,8 +104,7 @@
     <div class="row">
 
 
-
-            {!! $verifyTansactionHtml !!}
+        {!! $verifyTansactionHtml !!}
 
 
     </div>
@@ -67,7 +115,6 @@
     <script>
 
         $(document).on('submit', '#snedPaymentApi', function (e) {
-
 
 
             e.preventDefault(); // avoid to execute the actual submit of the form.
@@ -105,7 +152,6 @@
                         stopLoadWaiting()
 
                         $("#snedPaymentApi :input").prop("disabled", true);
-
 
 
                     } else if (result.status == 'ERROR') {

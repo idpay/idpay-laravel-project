@@ -46,7 +46,7 @@ class VerifyTransformer extends TransformerAbstract
 
             'view' => [
                 'request' => json_encode([
-                    'url' => 'https://api.idpay.ir/v1.1/verify',
+                    'url' => 'Post: https://api.idpay.ir/v1.1/verify',
                     'header' => $header,
                     'params' => $this->params($params)
                 ]),

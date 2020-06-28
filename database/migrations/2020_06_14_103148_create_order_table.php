@@ -24,11 +24,8 @@ class CreateOrderTable extends Migration
             $table->string('amount')->nullable();
             $table->string('reseller')->nullable();
             $table->string('status')->default(0);
-
-
-
-
-
+            $table->string('callback')->nullable();
+            $table->string('desc')->nullable();
             $table->string('return_id','50')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));

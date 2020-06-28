@@ -16,6 +16,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use PHPUnit\Framework\Constraint\Callback;
 use Spatie\Fractal\Fractal;
+use Verta;
 
 
 class ActivityController extends MainController
@@ -60,14 +61,15 @@ class ActivityController extends MainController
 
         $order = Order::findOrFail($id);
 
-        $status = json_decode($order->activities->where('step', 'return')->last()->response)->status;
-        if ((int)$status !== 10) {
-            $this->get_status_description($status);
-            Session::flash('status', $this->msg . "(" . "وضعیت:" . "$status)");
-        }
 
         $activityCreate = $order->activities->where('step', 'create')->last();
+        $redirectResult = $order->activities->where('step', 'redirect')->last();
+
         $callbackResult = $order->activities->where('step', 'return')->last();
+
+        if ($activityCreate == null or $redirectResult == null)
+            return abort(404);
+
 
         $activityCreateArray = Fractal::create()->item($activityCreate, new ActivitiyView())
             ->toArray();
@@ -84,24 +86,38 @@ class ActivityController extends MainController
             'order_id' => $order->id,
         ])->render();
 
+
         $callbackHtml = view('partial.callback')->with([
             'url' => json_decode($activityCreateArray['data']['view']['response'])->link,
-        ])->render();
-
-        $callbackResultArray = Fractal::create()->item($callbackResult->response, new CallBackResultArry())
-            ->toArray();
-
-        $callbackResultHtml = view('partial.callbackResult')->with([
-            'callbackResult' => $callbackResultArray['data'],
-            'step_tome' => $callbackResult->created_at->format('Y-m-d h-m-s'),
-            'url' => route('callback'),
+            'step_date' => new Verta($redirectResult->created_at),
         ])->render();
 
 
-        $verifyTansactionHtml = view('partial.verifyTransaction')->with([
-            'callbackResult' => $callbackResult,
-            'order_id' => $order->id,
-        ])->render();
+        $callbackResultHtml='';
+        $verifyTansactionHtml='';
+        if ($callbackResult !== null) {
+            $status = json_decode($order->activities->where('step', 'return')->last()->response)->status;
+            if ((int)$status !== 10) {
+                $this->get_status_description($status);
+                Session::flash('status', $this->msg . "(" . "وضعیت:" . "$status)");
+            }
+
+            $callbackResultArray = Fractal::create()->item($callbackResult->response, new CallBackResultArry())
+                ->toArray();
+
+
+            $callbackResultHtml = view('partial.callbackResult')->with([
+                'callbackResult' => $callbackResultArray['data'],
+                'step_tome' => $callbackResult->created_at->format('Y-m-d h-m-s'),
+                'url' => route('callback'),
+            ])->render();
+
+            $verifyTansactionHtml = view('partial.verifyTransaction')->with([
+                'callbackResult' => $callbackResult,
+                'order_id' => $order->id,
+            ])->render();
+
+        }
 
 
         return view('show')
@@ -128,6 +144,7 @@ class ActivityController extends MainController
     public function store(Request $request)
     {
 
+
         $order = $this->model->create($request->toArray());
         $params = [
             'order_id' => $order->id,
@@ -135,8 +152,8 @@ class ActivityController extends MainController
             'name' => $request->name,
             'phone' => $request->phone_number,
             'mail' => $request->email,
-            'desc' => 'توضیحات پرداخت کننده',
-            'callback' => $this->calbackUrl,
+            'desc' => $request->deck,
+            'callback' => $request->callback,
             'status' => 'processing',
             'reseller' => $request->reseller,
             'API_KEY' => $request->api_key,
@@ -220,6 +237,10 @@ class ActivityController extends MainController
     public function callback(Request $request)
     {
 
+        $CONTENT_TYPE = $request->server->all()['CONTENT_TYPE'];
+        $request->request->add(['CONTENT_TYPE' => $CONTENT_TYPE]); //add request
+
+//        dd($request->all());
         $activity = array(
             'order_id' => $request['order_id'],
             'step' => 'return',

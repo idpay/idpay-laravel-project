@@ -115,7 +115,8 @@
                         $("#" + rowDisable).attr("hidden", false);
                         stopLoadWaiting()
 
-                        $("#snedPaymentApi :input").prop("disabled", true);
+                        // $("#snedPaymentApi :input").prop("disabled", true);
+                        $("#" + submitButton).attr("disabled", false);
 
 
 

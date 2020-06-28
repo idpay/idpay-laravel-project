@@ -19,5 +19,7 @@ Simple project on Laravel framework for visual test API's payment service of IDP
 6. php artisan migrate:fresh
 7. php artisan db:seed
 8. php artisan key:generate
-9. php artisan serve
-10. Open project on http://127.0.0.1:8000
+9. echo '127.0.0.1 sandbox.idpay.local' | sudo tee -a /etc/hosts
+10. sudo php artisan serve --host=sandbox.idpay.local --port=80
+11. Open project on http://sandbox.idpay.local
+
