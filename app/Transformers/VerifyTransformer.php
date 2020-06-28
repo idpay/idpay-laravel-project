@@ -32,9 +32,7 @@ class VerifyTransformer extends TransformerAbstract
      */
     public function transform($activity)
     {
-
         $params = json_decode($activity['request']);
-
         $header = [
             'Content-Type' => 'application/json',
             "X-API-KEY" => $params->API_KEY,

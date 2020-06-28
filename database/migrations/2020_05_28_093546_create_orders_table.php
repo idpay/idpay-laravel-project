@@ -15,6 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->uuid('uuid')->unique();
             $table->string('API_KEY')->nullable();
             $table->boolean('sandbox')->default(0)->nullable();
             $table->string('name')->nullable();

@@ -23,6 +23,7 @@
     <pre class="ltr"><code id="verifyResponse" class="language-json json-response"></code></pre>
 </div>
 
+
 <script>
 
 
@@ -39,5 +40,3 @@
     el_down2.innerHTML = JSON.stringify(obj2, undefined, 4);
 
 </script>
-
-
