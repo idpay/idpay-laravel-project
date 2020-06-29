@@ -60,13 +60,13 @@ class MainController extends Controller
 
         switch ($status) {
             case 1:
-                $this->msg = 'پرداخت انجام نشده است. ';
+                $this->msg = 'پرداخت انجام نشده است.  ';
                 break;
             case 2:
-                $this->msg = '.پرداخت ناموفق بوده است';
+                $this->msg = 'پرداخت ناموفق بوده است.';
                 break;
             case 3:
-                $this->msg = '.خطا رخ داده است';
+                $this->msg = 'خطا رخ داده است.';
                 break;
             case 4:
                 $this->msg = 'بلوکه شده.';
@@ -84,17 +84,17 @@ class MainController extends Controller
                 $this->msg = 'به درگاه پرداخت منتقل شد.';
                 break;
             case 10:
-                $this->msg = '.در انتظار تایید پرداخت';
+                $this->msg = 'در انتظار تایید پرداخت.';
                 break;
             case 100:
-                $this->msg = '.پرداخت تایید شده است';
+                $this->msg = 'پرداخت تایید شده است.';
                 break;
             case 101:
                 $this->msg = 'پرداخت قبلا تایید شده است.';
                 break;
 
             case 200:
-                $this->msg = 'به دریافت کننده واریز شد';
+                $this->msg = 'به دریافت کننده واریز شد.';
                 break;
             case 405:
                 $this->msg = 'تایید پرداخت امکان پذیر نیست.';

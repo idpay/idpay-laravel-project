@@ -8,6 +8,7 @@ use App\Transformers\ActivitiyView;
 use App\Transformers\CallBackResultArry;
 use App\Transformers\VerifyTransformer;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use Spatie\Fractal\Fractal;
 use Hekmatinasser\Verta\Verta;
 
@@ -79,10 +80,9 @@ class ActivityViewController extends MainController
      */
     public function callBackResult($callbackResult, $stepTime)
     {
-
         return view('partial.callbackResult')->with([
             'callbackResult' => $callbackResult,
-            'step_tome' => $stepTime,
+            'step_tome' => new Verta($stepTime),
             'url' => route('callback'),
         ])->render();
     }
@@ -98,7 +98,6 @@ class ActivityViewController extends MainController
      */
     public function verifyResult($response, $request, $httpCode, $stepTime)
     {
-
         return view('partial.verifyResult')->with([
             'response' => $response,
             'request' => $request,
@@ -141,17 +140,20 @@ class ActivityViewController extends MainController
             $status = json_decode($order->activities->where('step', 'return')->last()->response)->status;
             if ((int)$status !== 10) {
                 $this->get_status_description($status);
-                Session::flash('status', $this->msg . "(" . "وضعیت:" . "$status)");
+
+                $replaced = Str::replaceLast('استاتوس', $status, "جمله (وضعیت: استاتوس)");
+                $replaced = Str::replaceLast('جمله', $this->msg, $replaced);
+                Session::flash('status',$replaced );
+                toastr()->error($replaced);
             }
 
             $callbackResultArray = Fractal::create()->item($callbackResult->response, new CallBackResultArry())
                 ->toArray();
 
 
-            $callbackResultHtml = $this->callBackResult($callbackResultArray['data'], $callbackResult->created_at->format('Y-m-d h-m-s'));
+            $callbackResultHtml = $this->callBackResult($callbackResultArray['data'], $callbackResult->created_at);
 
             $verifyRequestHtml = view('partial.verifyRequest')->with(['order_id' => $order->id,])->render();
-
 
 
             if ($verifyResult !== null) {

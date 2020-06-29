@@ -64,7 +64,7 @@
 
 
             <div id="timing" class="en"></div>
-            <div id="msg" class="en" style="display: none">Redirect to {{route('callback')}}</div>
+            <div id="msg" class="en" style="display: none">Redirect to <div id="msgLink"></div></div>
 
 
         </div>
