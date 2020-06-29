@@ -15,7 +15,8 @@
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "spatie/laravel-fractal": "^5.4",
-        "webpatser/laravel-uuid": "^3.0"
+        "webpatser/laravel-uuid": "^3.0",
+        "yoeunes/toastr": "^1.2"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

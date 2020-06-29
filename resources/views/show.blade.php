@@ -124,7 +124,6 @@
             e.preventDefault(); // avoid to execute the actual submit of the form.
             var form = $(this);
             var url = form.attr('action');
-
             loadWaiting()
             // alert(url)
             $.ajaxSetup({

@@ -11,18 +11,15 @@
           content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
     <link rel="stylesheet" href="{{asset('assets/bootstrap-3.4.1/css/bootstrap.min.css')}}">
     <script src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
-    <script src="{{asset('assets/bootstrap-3.4.1/js/bootstrap.min.js')}}"></script>
-    <link href="{{ asset('/assets/files/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
-    <script src="{{ asset('/assets/files/common.js') }}"></script>
+{{--    <script src="{{asset('assets/bootstrap-3.4.1/js/bootstrap.min.js')}}"></script>--}}
+
+
+{{--    <link href="{{ asset('/assets/files/bootstrap/css/bootstrap.css') }}" rel="stylesheet">--}}
+    {{--<script src="{{ asset('/assets/files/common.js') }}"></script>--}}
     <link rel="stylesheet" href="{{ asset('css/main.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main-front.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fontiran.css') }}">
-
-    <link href="{{asset('assets/toastr/toastr.min.css')}}" rel="stylesheet"/>
-    <script src="{{asset('assets/toastr/toastr.min.js')}}"></script>
-
-
-
+    @toastr_css
 
     @yield('header')
     <style type="text/css">
@@ -36,6 +33,9 @@
 
 
 <body>
+
+
+
 
 <header id="header" class="navbar navbar-static-top row">
 
@@ -102,6 +102,9 @@
 
 </body>
 
+@jquery
+@toastr_js
+@toastr_render
 
 <div class="row" id="loadWaiting"></div>
 
