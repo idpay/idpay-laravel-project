@@ -85,7 +85,6 @@ class FaildActivitiyView extends TransformerAbstract
             "mail" => $params->mail,
             "desc" => $params->desc,
             "callback" => $params->callback,
-            "status" => $params->status,
             "reseller" => $params->reseller,
         ];
     }
