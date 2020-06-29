@@ -16,10 +16,10 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->uuid('uuid')->unique();
-            $table->string('API_KEY')->nullable();
+            $table->string('api_key')->nullable();
             $table->boolean('sandbox')->default(0)->nullable();
             $table->string('name')->nullable();
-            $table->string('phone_number')->nullable();
+            $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('amount')->nullable();
             $table->string('reseller')->nullable();

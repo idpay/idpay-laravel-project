@@ -35,10 +35,10 @@ class OrderRepository implements OrderRepositoryInterface
         return $this->model->create(
 
             [
-                'API_KEY' => $data['api_key'],
+                'api_key' => $data['api_key'],
                 'sandbox' => $data['sandbox'],
                 'name' => $data['name'],
-                'phone_number' => $data['phone_number'],
+                'phone' => $data['phone_number'],
                 'email' => $data['email'],
                 'amount' =>  $data['amount'],
                 'reseller' => $data['reseller'],

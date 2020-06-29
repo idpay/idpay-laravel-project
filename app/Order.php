@@ -17,10 +17,10 @@ class Order extends Model
 
 
     public $fillable = [
-        'API_KEY',
+        'api_key',
         'sandbox',
         'name',
-        'phone_number',
+        'phone',
         'email',
         'amount',
         'reseller',

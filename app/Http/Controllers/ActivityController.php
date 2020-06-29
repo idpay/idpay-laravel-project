@@ -184,13 +184,20 @@ class ActivityController extends MainController
 
         ];
 
-        $activity = $this->model->createActivity($activity, $order->id);
+
+        $activityModel = $order->activities->where('step','verify');
+
+        if ($activityModel->count()){
+            $activity = $activity;
+        }else{
+            $activity = $this->model->createActivity($activity, $order->id);
+        }
 
         $activityArray = Fractal::create()->item($activity, new VerifyTransformer())
             ->toArray();
 
-        $http_code = $response->getStatusCode();
 
+        $http_code = $response->getStatusCode();
         $html = view('partial.verifyResult')->with([
             'response' => $activityArray['data']['view']['response'],
             'request' => $activityArray['data']['view']['request'],
