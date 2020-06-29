@@ -7,8 +7,8 @@
         درخواست
     </div>
     <div class="col-lg-6" style="font-size: 14px; text-align: left">
-        زمان:
-        {{$step_time}}
+        <label>زمان:</label>
+        <div class="request-time">{{$step_time}}</div>
     </div>
 </div>
 

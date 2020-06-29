@@ -13,12 +13,12 @@
     <script src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
 {{--    <script src="{{asset('assets/bootstrap-3.4.1/js/bootstrap.min.js')}}"></script>--}}
 
-
 {{--    <link href="{{ asset('/assets/files/bootstrap/css/bootstrap.css') }}" rel="stylesheet">--}}
     {{--<script src="{{ asset('/assets/files/common.js') }}"></script>--}}
     <link rel="stylesheet" href="{{ asset('css/main.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main-front.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fontiran.css') }}">
+    <link rel="icon" href="{{asset('image/favicon.ico')}}" type="image/gif" sizes="16x16">
     @toastr_css
 
     @yield('header')
