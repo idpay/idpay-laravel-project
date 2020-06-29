@@ -7,8 +7,8 @@
         درخواست
     </div>
     <div class="col-lg-6" style="font-size: 14px; text-align: left">
-        زمان:
-        {{$step_time}}
+        <label>زمان:</label>
+        <div class="request-time">{{$step_time}}</div>
     </div>
 </div>
 
@@ -22,6 +22,7 @@
     </p>
     <pre class="ltr"><code id="verifyResponse" class="language-json json-response"></code></pre>
 </div>
+
 
 <script>
 
@@ -39,5 +40,3 @@
     el_down2.innerHTML = JSON.stringify(obj2, undefined, 4);
 
 </script>
-
-

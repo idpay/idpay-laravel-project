@@ -33,14 +33,20 @@ class VerifyTransformer extends TransformerAbstract
     public function transform($activity)
     {
 
-        $params = json_decode($activity['request']);
 
+        $params = json_decode($activity['request']);
         $header = [
             'Content-Type' => 'application/json',
             "X-API-KEY" => $params->API_KEY,
             'X-SANDBOX' => (int)$params->sandbox
         ];
 
+
+        if (isset($activity['created_at'])){
+            $created_at=$activity['created_at'];
+        }else{
+            $created_at= now()->format('Y-m-d H:i:s');
+        }
 
         return [
 
@@ -51,7 +57,7 @@ class VerifyTransformer extends TransformerAbstract
                     'params' => $this->params($params)
                 ]),
                 'response' => $activity['response'],
-                'step_time' => new Verta($activity['created_at']),
+                'step_time' => $created_at,
 
             ],
 

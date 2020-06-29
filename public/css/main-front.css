@@ -309,3 +309,8 @@ hr{
     font-size: 12px;
 
 }
+
+.request-time{
+    direction: ltr;
+    display: inline-block
+}

@@ -47,7 +47,8 @@
                         method: 'post',
                         data: form.serialize(),
                         success: function (result) {
-
+                            toastr.options.rtl = true;
+                            toastr.success(result.message, '');
                             window.location.replace(result.link);
 
                         },

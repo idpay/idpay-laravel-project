@@ -98,18 +98,14 @@
             });
             jQuery.ajax({
                 url: url,
-
-
                 method: 'post',
                 data: form.serialize(),
                 success: function (result) {
 
                     // alert(result.status);
                     if (result.status == 'OK') {
-
                         jQuery('#titleTranserToGetway').show();
                         jQuery('#paymentResult').html(result.paymentAnswer);
-
                         jQuery('#transferToPort').html(result.transferToPort);
                         $("#" + submitButton).attr("disabled", true);
                         $("#" + rowDisable).attr("hidden", false);
@@ -117,17 +113,17 @@
 
                         // $("#snedPaymentApi :input").prop("disabled", true);
                         $("#" + submitButton).attr("disabled", false);
-
+                        toastr.options.rtl = true;
+                        toastr.success(result.message, '');
 
 
                     } else if (result.status == 'ERROR') {
                         jQuery('#paymentResult').html(result.paymentAnswer);
+                        toastr.options.rtl = true;
+                        toastr.error(result.message, '');
                         $("#" + submitButton).attr("disabled", false);
                         stopLoadWaiting()
-
-
                     }
-
 
                 },
                 error: function (error) {
@@ -135,7 +131,6 @@
                 }
             });
         });
-
 
     </script>
 

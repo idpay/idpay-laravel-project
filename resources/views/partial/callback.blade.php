@@ -5,8 +5,8 @@
 
     </div>
     <div class="col-lg-6" style="font-size: 14px; text-align: left">
-        زمان:
-        {{$step_date}}
+        <label>زمان:</label>
+        <div class="request-time">{{$step_date}}</div>
     </div>
 </div>
 

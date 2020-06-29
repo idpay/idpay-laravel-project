@@ -11,17 +11,15 @@
           content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
     <link rel="stylesheet" href="{{asset('assets/bootstrap-3.4.1/css/bootstrap.min.css')}}">
     <script src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
-    <script src="{{asset('assets/bootstrap-3.4.1/js/bootstrap.min.js')}}"></script>
-    <link href="{{ asset('/assets/files/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
-    <script src="{{ asset('/assets/files/common.js') }}"></script>
+    {{--    <script src="{{asset('assets/bootstrap-3.4.1/js/bootstrap.min.js')}}"></script>--}}
+
+    {{--    <link href="{{ asset('/assets/files/bootstrap/css/bootstrap.css') }}" rel="stylesheet">--}}
+    {{--<script src="{{ asset('/assets/files/common.js') }}"></script>--}}
     <link rel="stylesheet" href="{{ asset('css/main.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main-front.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fontiran.css') }}">
-
-    {{--<link rel="stylesheet" href="{{ asset('js/toastr.min.js') }}">--}}
-
-
-
+    <link rel="icon" href="{{asset('image/favicon.ico')}}" type="image/gif" sizes="16x16">
+    @toastr_css
 
     @yield('header')
     <style type="text/css">
@@ -36,25 +34,30 @@
 
 <body>
 
-{{--<script>--}}
-{{--// for success - green box--}}
-{{--toastr.success('Success messages');--}}
-{{--</script>--}}
 
-<header id="header" class="navbar navbar-static-top row">
+<header id="header" class="navbar navbar-static-top ">
 
     <div class='col-lg-2'></div>
 
+
+
     <div class='col-lg-8'>
-        <div id="header-logo">
-            <a href="{{route('index')}}">
-                <img class="logo" typeof="foaf:Image" src="{{asset('image/logo-orange.svg')}}" alt="IDPay logo">
-            </a>
+
+
+        <div class="container">
+            <div id="header-logo">
+                <a href="{{route('index')}}">
+                    <img class="logo" typeof="foaf:Image" src="{{asset('image/logo-orange.svg')}}" alt="IDPay logo">
+                </a>
+            </div>
+
+            <div id="header-title">
+                <h3>آزمایشگاه سرویس پرداخت آیدی‌ پی</h3>
+            </div>
+
         </div>
 
-        <div id="header-title">
-           <h3>آزمایشگاه سرویس پرداخت آیدی‌ پی</h3>
-        </div>
+
     </div>
 
     <div class='col-lg-2'></div>
@@ -99,8 +102,13 @@
 
 
 </script>
+
+
 </body>
 
+@jquery
+@toastr_js
+@toastr_render
 
 <div class="row" id="loadWaiting"></div>
 
