@@ -81,13 +81,17 @@
         </div>
     </div>
 
-
-
+    <div class="form-group">
+        <label class="control-label col-sm-4" for="{{__('sandbox.reseller')}}">
+        </label>
+        <div class="col-sm-8">
+            <input type="submit" class="form-control submit-idpay" style="" id="snedPaymentApiButton"  @if(isset($order))   disabled @endif  value="ایجاد تراکنش">
+        </div>
+    </div>
 
 
     <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-9">
-            <button type="submit" id="snedPaymentApiButton" class="btn btn-default" @if(isset($order)) disabled @endif>ایجاد تراکنش</button>
+        <div class="col-12">
         </div>
     </div>
 </form>

@@ -53,9 +53,8 @@ class ActivityController extends MainController
             'name' => $request->name,
             'phone' => $request->phone_number,
             'mail' => $request->email,
-            'desc' => $request->deck,
+            'desc' => $request->desc,
             'callback' => $request->callback,
-            'status' => 'processing',
             'reseller' => $request->reseller,
             'API_KEY' => $request->api_key,
             'sandbox' => (int)$request->sandbox,
@@ -186,7 +185,6 @@ class ActivityController extends MainController
 
 
         $activityModel = $order->activities->where('step','verify');
-
         if ($activityModel->count()){
             $activity = $activity;
         }else{

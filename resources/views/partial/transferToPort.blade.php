@@ -1,9 +1,13 @@
 <form class="form-horizontal" action="{{route('payment',['id'=>$order_id])}}" data-content="transferToPortRequestSubmit" id="transferToPortRequest">
     <input type="hidden" name="link" value="{{$link}}">
     <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-9">
-            <button type="submit" class="btn btn-default" id="transferToPortRequestSubmit">انتقال به درگاه</button>
+        <label class="control-label col-sm-2" for="">
+        </label>
+        <div class="col-sm-8">
+            <input type="submit" class="form-control submit-idpay" id="transferToPortRequestSubmit" value="انتقال به درگاه">
         </div>
+        <label class="control-label col-sm-2" for="">
+        </label>
     </div>
 </form>
 

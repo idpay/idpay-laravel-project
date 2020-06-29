@@ -314,3 +314,9 @@ hr{
     direction: ltr;
     display: inline-block
 }
+
+.submit-idpay{
+
+    background-color: #8db5ff;
+    color: #fff;
+}
