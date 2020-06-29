@@ -21,46 +21,53 @@
         var timing;
         var myTimer;
 
-        begin()
+        // begin()
 
 
-        function begin() {
-            timing = 3;
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        jQuery.ajax({
+            url: url,
 
-            $('#timing').html('درحال انتقال به درگاه ' + timing);
-            $('#msg').show();
-            // $('#begin').prop('disabled', true);
-            myTimer = setInterval(function () {
-                --timing;
+            method: 'post',
+            data: form.serialize(),
+            success: function (result) {
+
+                timing = 3;
+
                 $('#timing').html('درحال انتقال به درگاه ' + timing);
-                if (timing === 0) {
-                    clearInterval(myTimer);
-                    loadWaiting()
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-                    jQuery.ajax({
-                        url: url,
+                $('#msg').show();
+                $('#msgLink').html(result.link)
 
-                        method: 'post',
-                        data: form.serialize(),
-                        success: function (result) {
-                            toastr.options.rtl = true;
-                            toastr.success(result.message, '');
-                            window.location.replace(result.link);
+                // $('#begin').prop('disabled', true);
+                myTimer = setInterval(function () {
+                    --timing;
+                    $('#timing').html('درحال انتقال به درگاه ' + timing);
+                    if (timing === 0) {
+                        clearInterval(myTimer);
+                        loadWaiting()
+                        toastr.options.rtl = true;
+                        toastr.success(result.message, '');
+                        window.location.replace(result.link);
 
-                        },
-                        error: function (error) {
-                            console.log(error);
-                        }
-                    });
+                    }
+                }, 1000);
 
 
-                }
-            }, 1000);
-        }
+
+
+
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+
+
+
 
     });
 

@@ -15,7 +15,7 @@ class VerifyTransformer extends TransformerAbstract
     protected $defaultIncludes = [
         //
     ];
-    
+
     /**
      * List of resources possible to include
      *
@@ -24,7 +24,7 @@ class VerifyTransformer extends TransformerAbstract
     protected $availableIncludes = [
         //
     ];
-    
+
     /**
      * A Fractal transformer.
      *
@@ -42,10 +42,10 @@ class VerifyTransformer extends TransformerAbstract
         ];
 
 
-        if (isset($activity['created_at'])){
-            $created_at=$activity['created_at'];
-        }else{
-            $created_at= now()->format('Y-m-d H:i:s');
+        if (isset($activity['created_at'])) {
+            $created_at = $activity['created_at'];
+        } else {
+            $created_at = now()->format('Y-m-d H:i:s');
         }
 
         return [
@@ -57,7 +57,7 @@ class VerifyTransformer extends TransformerAbstract
                     'params' => $this->params($params)
                 ]),
                 'response' => $activity['response'],
-                'step_time' => $created_at,
+                'step_time' => new Verta($created_at),
 
             ],
 
@@ -65,7 +65,7 @@ class VerifyTransformer extends TransformerAbstract
     }
 
 
-        public function params($params)
+    public function params($params)
     {
 
 
@@ -76,7 +76,6 @@ class VerifyTransformer extends TransformerAbstract
 
         ];
     }
-
 
 
 }
