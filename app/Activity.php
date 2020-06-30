@@ -11,6 +11,7 @@ class Activity extends Model
   'request',
   'response',
   'http_code',
+  'request_time',
  ];
  
 }

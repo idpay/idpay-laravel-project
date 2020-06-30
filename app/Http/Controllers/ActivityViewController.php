@@ -96,13 +96,14 @@ class ActivityViewController extends MainController
      * @return array|string
      * @throws \Throwable
      */
-    public function verifyResult($response, $request, $httpCode, $stepTime)
+    public function verifyResult($response, $request, $httpCode, $stepTime,$request_time)
     {
         return view('partial.verifyResult')->with([
             'response' => $response,
             'request' => $request,
             'http_code' => $httpCode,
             'step_time' => $stepTime,
+            'request_time' => $request_time,
         ])->render();
 
     }
@@ -147,8 +148,9 @@ class ActivityViewController extends MainController
                 toastr()->error($replaced);
             }
 
-            $callbackResultArray = Fractal::create()->item($callbackResult->response, new CallBackResultArry())
-                ->toArray();
+
+            $callbackResultArray = Fractal::create()->item($callbackResult->response, new CallBackResultArry())->toArray();
+
 
 
             $callbackResultHtml = $this->callBackResult($callbackResultArray['data'], $callbackResult->created_at);
@@ -158,7 +160,8 @@ class ActivityViewController extends MainController
 
             if ($verifyResult !== null) {
                 $verifyResultArray = Fractal::create()->item($verifyResult, new VerifyTransformer())->toArray();
-                $verifyResultHtml = $this->verifyResult($verifyResultArray['data']['view']['response'], $verifyResultArray['data']['view']['request'], $verifyResult->http_code, $verifyResultArray['data']['view']['step_time']);
+                $verifyResultHtml = $this->verifyResult($verifyResultArray['data']['view']['response'], $verifyResultArray['data']['view']['request'], $verifyResult->http_code, $verifyResultArray['data']['view']['step_time'],$verifyResultArray['data']['view']['request_time']);
+
             }
         }
 

@@ -39,6 +39,9 @@ class MainController extends Controller
 
 
         $client = new Client();
+        $starttime = microtime(1);
+
+//        dd();
         $response = $client->request('POST', $url,
             [
                 'json' => $params,
@@ -46,8 +49,11 @@ class MainController extends Controller
                 'http_errors' => false
             ]);
 
-        return $response;
+        $elapsed = microtime(1) - $starttime;
+        $elapsed = number_format((float)$elapsed, 3, '.', '');
+        $response->elapsed = $elapsed;
 
+        return $response;
     }
 
 
@@ -103,8 +109,6 @@ class MainController extends Controller
         }
 
     }
-
-
 
 
 }

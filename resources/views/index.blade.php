@@ -54,17 +54,25 @@
 
         <div class="col-lg-6" id="transferToPort">
 
-            {{--{!! $transferToPortHtml !!}--}}
 
         </div>
 
         <div class="col-lg-6" id="transferToPortWait">
 
-            {{--{!! $callbackHtml !!}--}}
 
 
-            <div id="timing" class="en"></div>
-            <div id="msg" class="en" style="display: none">Redirect to <div id="msgLink"></div></div>
+
+            <div style="display: none">
+
+
+            </div>
+            <h4 style="text-align: left"> Redirect to</h4>
+
+
+
+            <pre id="msgLink" >
+
+            </pre>
 
 
         </div>
@@ -109,14 +117,12 @@
                         jQuery('#transferToPort').html(result.transferToPort);
                         $("#" + submitButton).attr("disabled", true);
                         $("#" + rowDisable).attr("hidden", false);
-                        stopLoadWaiting()
 
-                        // $("#snedPaymentApi :input").prop("disabled", true);
+                        $('#msgLink').html(result.link)
+                        stopLoadWaiting()
                         $("#" + submitButton).attr("disabled", false);
                         toastr.options.rtl = true;
                         toastr.success(result.message, '');
-
-
                     } else if (result.status == 'ERROR') {
                         jQuery('#paymentResult').html(result.paymentAnswer);
                         toastr.options.rtl = true;

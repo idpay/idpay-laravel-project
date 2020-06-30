@@ -1,22 +1,11 @@
-{{--step_date--}}
 <div class="col-lg-12">
-
-    <div class="col-lg-6">
-
-    </div>
-    <div class="col-lg-6" style="font-size: 14px; text-align: left">
-        <label>زمان:</label>
-        <div class="request-time">{{$step_date}}</div>
-    </div>
+    <span>زمان انتقال به درگاه پرداخت:</span>
+    <span class="request-time">{{$step_date}}</span>
 </div>
 
-<br>
-<br>
-<div class="col-lg-12">
-    <p class="en">
-
-        url:
-        {{$url}}
-
-    </p>
+<div>
+    <h4 style="text-align: left">URL</h4>
+    @php
+        echo '<pre>',print_r($url,true),'</pre>';
+    @endphp
 </div>

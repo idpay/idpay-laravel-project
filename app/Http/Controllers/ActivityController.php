@@ -64,40 +64,42 @@ class ActivityController extends MainController
         $header = $this->header($request->api_key, $request->sandbox);
         $response = $this->requestHttp($params, $header, 'https://api.idpay.ir/v1.1/payment');
 
-
         $activity = [
             'http_code' => $response->getStatusCode(),
             'request' => json_encode($params),
             'response' => $response->getBody(),
             'step' => 'create',
-
+            'request_time' => $response->elapsed,
         ];
 
         $activity = $this->model->createActivity($activity, $order->id);
+
         if ($response->getStatusCode() == 201) {
             $this->model->update(['return_id' => json_decode($response->getBody())->id], $order->id);
-            $activityArray = Fractal::create()->item($activity, new ActivitiyView())
-                ->toArray();
+
+            $activityArray = Fractal::create()->item($activity, new ActivitiyView())->toArray();
 
             $html = view('partial.paymentAnswer')->with([
                 'activity' => $activityArray['data']['view'],
                 'http_code' => $response->getStatusCode(),
             ])->render();
 
+
+            $link = json_decode($activityArray['data']['view']['response'])->link;
             $transferToPortHtml = view('partial.transferToPort')->with([
-                'link' => json_decode($activityArray['data']['view']['response'])->link,
+                'link' => $link,
                 'order_id' => $order->id,
 
             ])->render();
 
-            return \response()->json(['status' => 'OK', 'paymentAnswer' => $html, 'transferToPort' => $transferToPortHtml, 'message' => 'تراکنش شما ایجاد شد.']);
+            return \response()->json(['status' => 'OK', 'paymentAnswer' => $html, 'link' => $link, 'transferToPort' => $transferToPortHtml, 'message' => 'تراکنش شما ایجاد شد.']);
 
 
         } else {
 
 
-            $activityArray = Fractal::create()->item($activity, new FaildActivitiyView())
-                ->toArray();
+            $activityArray = Fractal::create()->item($activity, new FaildActivitiyView())->toArray();
+
             $html = view('partial.paymentAnswer')->with([
                 'activity' => $activityArray['data']['view'],
                 'http_code' => $response->getStatusCode(),
@@ -180,19 +182,19 @@ class ActivityController extends MainController
             'request' => json_encode($params),
             'response' => $response->getBody(),
             'step' => 'verify',
+            'request_time' => $response->elapsed,
 
         ];
 
 
-        $activityModel = $order->activities->where('step','verify');
-        if ($activityModel->count()){
+        $activityModel = $order->activities->where('step', 'verify');
+        if ($activityModel->count()) {
             $activity = $activity;
-        }else{
+        } else {
             $activity = $this->model->createActivity($activity, $order->id);
         }
 
-        $activityArray = Fractal::create()->item($activity, new VerifyTransformer())
-            ->toArray();
+        $activityArray = Fractal::create()->item($activity, new VerifyTransformer())->toArray();
 
 
         $http_code = $response->getStatusCode();
@@ -201,6 +203,7 @@ class ActivityController extends MainController
             'request' => $activityArray['data']['view']['request'],
             'http_code' => $http_code,
             'step_time' => $activityArray['data']['view']['step_time'],
+            'request_time' => $activityArray['data']['view']['request_time'],
         ])->render();
 
 

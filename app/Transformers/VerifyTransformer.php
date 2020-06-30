@@ -58,6 +58,7 @@ class VerifyTransformer extends TransformerAbstract
                 ]),
                 'response' => $activity['response'],
                 'step_time' => new Verta($created_at),
+                'request_time' => $activity['request_time'],
 
             ],
 
