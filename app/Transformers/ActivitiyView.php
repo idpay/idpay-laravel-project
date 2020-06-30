@@ -58,6 +58,7 @@ class ActivitiyView extends TransformerAbstract
                 ]),
                 'response' => $activity['response'],
                 'step_time' => $created->format('Y-m-d H:i:s'),
+                'request_time' => $activity['request_time'],
 
 
             ],

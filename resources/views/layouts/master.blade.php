@@ -11,10 +11,6 @@
           content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
     <link rel="stylesheet" href="{{asset('assets/bootstrap-3.4.1/css/bootstrap.min.css')}}">
     <script src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
-    {{--    <script src="{{asset('assets/bootstrap-3.4.1/js/bootstrap.min.js')}}"></script>--}}
-
-    {{--    <link href="{{ asset('/assets/files/bootstrap/css/bootstrap.css') }}" rel="stylesheet">--}}
-    {{--<script src="{{ asset('/assets/files/common.js') }}"></script>--}}
     <link rel="stylesheet" href="{{ asset('css/main.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main-front.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fontiran.css') }}">
@@ -27,82 +23,56 @@
             float: left !important;
         }
     </style>
-
-
 </head>
 
-
 <body>
-
-
 <header id="header" class="navbar navbar-static-top ">
 
     <div class='col-lg-2'></div>
-
-
-
     <div class='col-lg-8'>
-
-
         <div class="container">
             <div id="header-logo">
                 <a href="{{route('index')}}">
                     <img class="logo" typeof="foaf:Image" src="{{asset('image/logo-orange.svg')}}" alt="IDPay logo">
                 </a>
             </div>
-
             <div id="header-title">
                 <h3>آزمایشگاه سرویس پرداخت آیدی‌ پی</h3>
             </div>
-
         </div>
-
-
     </div>
-
     <div class='col-lg-2'></div>
-
 
 </header>
 
 <div class="container">
-
     @yield('content')
-
 </div>
 
-
 <footer id="footer">
-
     <p style="text-align: center;  font-size:12px; padding-top:10px; ">
-        <a href="https://idpay.ir/" target="_blank" style="color:#fe681e">IDPay</a>
+         توسعه یافته توسط
+        <a href="https://idpay.ir/" target="_blank" style="color:#fe681e">
+            آیدی پی
+        </a>
+        <a href="https://github.com/idpay/php-laravel-sandbox" style="padding-right:2px;">
+            <img width="30px"  src="{{asset('image/github.svg')}}" alt="">
+        </a>
     </p>
 </footer>
 
 
 <script>
     function loadWaiting() {
-
         var div = $("#loadWaiting");
-
         div.animate({width: '100%', opacity: '1'}, "100");
-        // div.animate({width: '0', opacity: '0'}, "fast");
-
-
     }
-
     function stopLoadWaiting() {
-
         var div = $("#loadWaiting");
         div.stop();
         div.animate({width: '0', opacity: '0'}, "fast");
-
-
     }
-
-
 </script>
-
 
 </body>
 
@@ -111,6 +81,5 @@
 @toastr_render
 
 <div class="row" id="loadWaiting"></div>
-
 
 </html>

@@ -20,6 +20,7 @@ class CreateActivitiesTable extends Migration
             $table->string('http_code')->nullable();
             $table->json('request')->nullable();
             $table->json('response')->nullable();
+            $table->string('request_time')->nullable();
             $table->foreign('order_id')->references('id')->on('orders');
             $table->timestamps();
         });

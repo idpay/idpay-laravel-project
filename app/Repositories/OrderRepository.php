@@ -90,7 +90,6 @@ class OrderRepository implements OrderRepositoryInterface
 
     public function createActivity(array $data, $id)
     {
-
         $activity = $this->model->findOrFail($id)->activities()->create($data);
         return $activity->toArray();
     }
