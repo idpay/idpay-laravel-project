@@ -246,18 +246,13 @@ th {
 
 .en {
     text-align: center;
-    /*float: left;*/
-    /*direction: ltr;*/
-
 }
 
 pre {
-    /*color: black !important;*/
     font-size: 15px;
     font-weight: bold;
     direction: ltr;
     color: #669900
-    /*background: #669916;*/
 
 }
 
@@ -269,7 +264,6 @@ pre {
     direction: ltr;
 }
 
-/*4B476D*/
 .titleAction {
     background-color: #4B476D;
 }
@@ -278,7 +272,6 @@ pre {
     color: #E1E0E7;
 }
 
-/*E1E0E7*/
 #loadWaiting {
     background: #4099DE;
     height: 1%;

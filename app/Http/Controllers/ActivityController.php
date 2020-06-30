@@ -21,18 +21,14 @@ use Verta;
 
 class ActivityController extends MainController
 {
-
-
     private $calbackUrl;
     protected $model;
-
 
     public function __construct(OrderRepositoryInterface $model)
     {
         $this->calbackUrl = route('callback');
         $this->model = $model;
     }
-
 
     /**
      * @param Request $request
@@ -42,11 +38,7 @@ class ActivityController extends MainController
      */
     public function store(Request $request)
     {
-
-
         $order = $this->model->create($request->toArray());
-
-
         $params = [
             'order_id' => $order->id,
             'amount' => $request->amount,
@@ -59,7 +51,6 @@ class ActivityController extends MainController
             'API_KEY' => $request->api_key,
             'sandbox' => (int)$request->sandbox,
         ];
-
 
         $header = $this->header($request->api_key, $request->sandbox);
         $response = $this->requestHttp($params, $header, 'https://api.idpay.ir/v1.1/payment');
@@ -84,7 +75,6 @@ class ActivityController extends MainController
                 'http_code' => $response->getStatusCode(),
             ])->render();
 
-
             $link = json_decode($activityArray['data']['view']['response'])->link;
             $transferToPortHtml = view('partial.transferToPort')->with([
                 'link' => $link,
@@ -97,7 +87,6 @@ class ActivityController extends MainController
 
         } else {
 
-
             $activityArray = Fractal::create()->item($activity, new FaildActivitiyView())->toArray();
 
             $html = view('partial.paymentAnswer')->with([
@@ -107,7 +96,6 @@ class ActivityController extends MainController
             ])->render();
 
             return \response()->json(['status' => 'ERROR', 'paymentAnswer' => $html, 'message' => 'تراکنش شما ایجاد نشد.']);
-
         }
 
 
@@ -153,7 +141,6 @@ class ActivityController extends MainController
 
     }
 
-
     /**
      * @param Request $request
      * @param $id
@@ -186,7 +173,6 @@ class ActivityController extends MainController
 
         ];
 
-
         $activityModel = $order->activities->where('step', 'verify');
         if ($activityModel->count()) {
             $activity = $activity;
@@ -196,7 +182,6 @@ class ActivityController extends MainController
 
         $activityArray = Fractal::create()->item($activity, new VerifyTransformer())->toArray();
 
-
         $http_code = $response->getStatusCode();
         $html = view('partial.verifyResult')->with([
             'response' => $activityArray['data']['view']['response'],
@@ -205,7 +190,6 @@ class ActivityController extends MainController
             'step_time' => $activityArray['data']['view']['step_time'],
             'request_time' => $activityArray['data']['view']['request_time'],
         ])->render();
-
 
         return \response()->json(['status' => 'OK', 'data' => $html, 'message' => "کد وضعیت پاسخ: $http_code "]);
 

@@ -13,13 +13,10 @@
     </div>
 </form>
 
-
 <div id="timing" class="en"></div>
-
 
 <script>
     $(document).on('submit', '#transferToPortRequest', function (e) {
-
         e.preventDefault();
         var form = $(this);
         var url = form.attr('action');
@@ -33,10 +30,8 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
         jQuery.ajax({
             url: url,
-
             method: 'post',
             data: form.serialize(),
             success: function (result) {
