@@ -1,10 +1,5 @@
 @extends('layouts.master')
-
-
-
-
 @section('content')
-
     <link rel="stylesheet" href="{{ asset('json/prism.css') }}">
     <script src="{{ asset('json/prism.js') }}"></script>
 

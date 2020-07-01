@@ -114,7 +114,6 @@ Mohammad Nabipoor
 
 body {
     background-color: #EEEEF5;
-
 }
 
 button,
@@ -265,11 +264,19 @@ pre {
 }
 
 .titleAction {
-    background-color: #4B476D;
+    background-color: #0881D6;
+}
+
+cite {
+    color: #ffffff;
+}
+
+cite::after, :before {
+    color: #ffffff;
 }
 
 .titleAction > p {
-    color: #E1E0E7;
+    color: #ffffff;
 }
 
 #loadWaiting {
@@ -286,7 +293,6 @@ pre {
 }
 
 .en-style {
-
     text-align: left;
 }
 
@@ -295,7 +301,7 @@ hr {
 }
 
 .response-title span {
-    font-size: 12px;
+    font-size: 20px;
 }
 
 .request-time {
@@ -306,4 +312,8 @@ hr {
 .submit-idpay {
     background-color: #007BFF;
     color: #fff;
+}
+
+.blockquote{
+    margin-top: 10px;
 }

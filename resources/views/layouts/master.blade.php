@@ -27,10 +27,7 @@
 
 <body>
 <header id="header" class="navbar navbar-static-top ">
-
-    <div class='col-lg-2'></div>
-    <div class='col-lg-8'>
-        <div class="container">
+    <div class="container">
             <div id="header-logo">
                 <a href="{{route('index')}}">
                     <img class="logo" typeof="foaf:Image" src="{{asset('image/logo-orange.svg')}}" alt="IDPay logo">
@@ -39,10 +36,7 @@
             <div id="header-title">
                 <h3>آزمایشگاه سرویس پرداخت آیدی‌ پی</h3>
             </div>
-        </div>
     </div>
-    <div class='col-lg-2'></div>
-
 </header>
 
 <div class="container">
@@ -51,12 +45,12 @@
 
 <footer id="footer">
     <p style="text-align: center;  font-size:12px; padding-top:10px; ">
-         توسعه یافته توسط
+        توسعه یافته توسط
         <a href="https://idpay.ir/" target="_blank" style="color:#fe681e">
             آیدی پی
         </a>
         <a href="https://github.com/idpay/php-laravel-sandbox" style="padding-right:2px;">
-            <img width="30px"  src="{{asset('image/github.svg')}}" alt="">
+            <img width="30px" src="{{asset('image/github.svg')}}" alt="">
         </a>
     </p>
 </footer>
@@ -67,6 +61,7 @@
         var div = $("#loadWaiting");
         div.animate({width: '100%', opacity: '1'}, "100");
     }
+
     function stopLoadWaiting() {
         var div = $("#loadWaiting");
         div.stop();
