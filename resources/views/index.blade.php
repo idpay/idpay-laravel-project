@@ -28,7 +28,7 @@
         <div class="col-lg-6" id="transferToPortWait">
             <div style="display: none"></div>
             <h4 style="text-align: left"> Redirect to</h4>
-            <pre id="msgLink" ></pre>
+            <pre id="msgLink"></pre>
         </div>
     </div>
 
