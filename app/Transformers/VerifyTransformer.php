@@ -32,8 +32,6 @@ class VerifyTransformer extends TransformerAbstract
      */
     public function transform($activity)
     {
-
-
         $params = json_decode($activity['request']);
         $header = [
             'Content-Type' => 'application/json',
@@ -49,17 +47,15 @@ class VerifyTransformer extends TransformerAbstract
         }
 
         return [
-
             'view' => [
                 'request' => json_encode([
-                    'url' => 'Post: https://api.idpay.ir/v1.1/payment/verify',
+                    'url' => "Post: ".env('IDPAY_ENDPOINT','https://api.idpay.ir/v1.1')."/payment/verify",
                     'header' => $header,
                     'params' => $this->params($params)
                 ]),
                 'response' => $activity['response'],
                 'step_time' => new Verta($created_at),
                 'request_time' => $activity['request_time'],
-
             ],
 
         ];

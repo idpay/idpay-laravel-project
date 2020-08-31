@@ -33,10 +33,6 @@ class ActivitiyView extends TransformerAbstract
      */
     public function transform($activity)
     {
-
-
-
-
         $params = json_decode($activity['request']);
         $header = [
             'Content-Type' => 'application/json',
@@ -44,35 +40,25 @@ class ActivitiyView extends TransformerAbstract
             'X-SANDBOX' => (int)$params->sandbox
         ];
 
-
         $created = new Verta($activity['created_at']);
-
-
         return [
-
             'view' => [
                 'request' => json_encode([
-                    'url' => 'Post: https://api.idpay.ir/v1.1/payment',
+                    'url' => "Post: ".env('IDPAY_ENDPOINT','https://api.idpay.ir/v1.1')."/payment",
                     'header' => $header,
                     'params' => $this->params($params)
                 ]),
                 'response' => $activity['response'],
                 'step_time' => $created->format('Y-m-d H:i:s'),
                 'request_time' => $activity['request_time'],
-
-
             ],
 
         ];
 
-
     }
-
 
     public function params($params)
     {
-
-
         return [
 
             "order_id" => $params->order_id,
