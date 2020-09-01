@@ -36,6 +36,7 @@ class MainController extends Controller
      */
     public function requestHttp($params, $header, $url)
     {
+        $url = starts_with($url, '/') ? $url : "/$url";
         $idpay_endpoint = env('IDPAY_ENDPOINT','https://api.idpay.ir/v1.1').$url;
 
         $client = new Client();
