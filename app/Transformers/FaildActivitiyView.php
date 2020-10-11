@@ -28,14 +28,11 @@ class FaildActivitiyView extends TransformerAbstract
 
 
     /**
-     * A Fractal transformer.
-     *
-     * @return array
+     * @param $activity
+     * @return array[]
      */
     public function transform($activity)
     {
-
-
         $params = json_decode($activity['request']);
 
         $header = [
@@ -46,21 +43,17 @@ class FaildActivitiyView extends TransformerAbstract
 
         $created = new Verta($activity['created_at']);
 
-
         return [
-
             'view' => [
                 'request' => json_encode([
-                    'url' => 'Post: https://api.idpay.ir/v1.1/payment',
+                    'url' => "Post: ".env('IDPAY_ENDPOINT','https://api.idpay.ir/v1.1')."/payment",
                     'header' => $header,
                     'params' => $this->params($params)
                 ]),
                 'response' => $activity['response'],
                 'step_time' => $created->format('Y-m-d H:i:s'),
                 'request_time' => $activity['request_time'],
-
             ],
-
 
         ];
 

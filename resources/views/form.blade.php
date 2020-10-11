@@ -6,7 +6,7 @@
         <label class="control-label col-sm-4"
                for="{{__('sandbox.api_key')}}">{{__('sandbox.api_key')}} *</label>
         <div class="col-sm-8">
-            <input type="text" class="form-control" id="api_key" placeholder="مثال: a5b6-4926-aa74-427b95c2"  @if(isset($order)) disabled  value="* {{$order->API_KEY}}" @endif
+            <input type="text" class="form-control" id="api_key" placeholder="مثال: a5b6-4926-aa74-427b95c2"  @if(isset($order)) disabled  value="{{$order->api_key}}" @endif
             name="api_key" >
         </div>
     </div>

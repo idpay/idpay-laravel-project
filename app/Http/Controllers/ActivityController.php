@@ -53,7 +53,7 @@ class ActivityController extends MainController
         ];
 
         $header = $this->header($request->api_key, $request->sandbox);
-        $response = $this->requestHttp($params, $header, 'https://api.idpay.ir/v1.1/payment');
+        $response = $this->requestHttp($params, $header, '/payment');
 
         $activity = [
             'http_code' => $response->getStatusCode(),
@@ -161,7 +161,7 @@ class ActivityController extends MainController
         ];
 
         $header = $this->header(json_decode($order->activities->where('step', 'create')->last()->request)->API_KEY, $order['sandbox']);
-        $response = $this->requestHttp($params, $header, 'https://api.idpay.ir/v1.1/payment/verify');
+        $response = $this->requestHttp($params, $header, '/payment/verify');
 
 
         $activity = [

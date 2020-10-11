@@ -36,13 +36,13 @@ class MainController extends Controller
      */
     public function requestHttp($params, $header, $url)
     {
-
+        $url = starts_with($url, '/') ? $url : "/$url";
+        $idpay_endpoint = env('IDPAY_ENDPOINT','https://api.idpay.ir/v1.1').$url;
 
         $client = new Client();
         $starttime = microtime(1);
 
-//        dd();
-        $response = $client->request('POST', $url,
+        $response = $client->request('POST', $idpay_endpoint,
             [
                 'json' => $params,
                 'headers' => $header,
