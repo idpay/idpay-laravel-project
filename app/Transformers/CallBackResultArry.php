@@ -41,8 +41,7 @@ class CallBackResultArry extends TransformerAbstract
                 'track_id'=>$item->track_id,
             ],
             'CONTENT_TYPE'=>'Content-Type: '.$item->CONTENT_TYPE,
-            'REQUEST_METHOD'=>'REQUEST_METHOD: '.$item->REQUEST_METHOD,
-
+            'REQUEST_METHOD'=>'REQUEST_METHOD: '. empty($item->REQUEST_METHOD) ? 'POST' : $item->REQUEST_METHOD,
         ];
     }
 }
