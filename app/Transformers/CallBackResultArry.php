@@ -14,7 +14,7 @@ class CallBackResultArry extends TransformerAbstract
     protected $defaultIncludes = [
         //
     ];
-    
+
     /**
      * List of resources possible to include
      *
@@ -23,7 +23,7 @@ class CallBackResultArry extends TransformerAbstract
     protected $availableIncludes = [
         //
     ];
-    
+
     /**
      * A Fractal transformer.
      *
@@ -33,20 +33,16 @@ class CallBackResultArry extends TransformerAbstract
     {
 
         $item=json_decode($item);
+
         return [
             'view'=>[
                 'id'=>$item->id,
-                'date'=>$item->date,
-                'amount'=>$item->amount,
                 'status'=>$item->status,
-                'card_no'=>$item->card_no,
                 'order_id'=>$item->order_id,
                 'track_id'=>$item->track_id,
-                'hashed_card_no'=>$item->hashed_card_no,
-
             ],
             'CONTENT_TYPE'=>'Content-Type: '.$item->CONTENT_TYPE,
-
+            'REQUEST_METHOD'=>'REQUEST_METHOD: '.$item->REQUEST_METHOD,
 
         ];
     }

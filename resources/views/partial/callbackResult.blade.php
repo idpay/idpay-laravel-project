@@ -21,6 +21,10 @@
     @php
         echo '<pre>',print_r($callbackResult['CONTENT_TYPE'],true),'</pre>';
     @endphp
+    <h4 style="text-align: left">Method</h4>
+    @php
+        echo '<pre>',print_r($callbackResult['REQUEST_METHOD'],true),'</pre>';
+    @endphp
     <h4 style="text-align: left">Form data</h4>
     @php
         $txt= str_replace("Array", "", print_r($callbackResult['view'],true));

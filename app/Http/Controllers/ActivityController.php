@@ -127,8 +127,14 @@ class ActivityController extends MainController
     public function callback(Request $request)
     {
         $order = $this->model->find($request->order_id);
-        $CONTENT_TYPE = $request->server->all()['CONTENT_TYPE'];
-        $request->request->add(['CONTENT_TYPE' => $CONTENT_TYPE]); //add request
+        $CONTENT_TYPE = !empty($request->server->all()['CONTENT_TYPE']) ? $request->server->all()['CONTENT_TYPE'] : 'html/text' ;
+
+        // Add to request
+        $request->request->add([
+            'CONTENT_TYPE' => $CONTENT_TYPE,
+            'REQUEST_METHOD' => $request->method(),
+        ]);
+
         $activity = array(
             'order_id' => $request['order_id'],
             'step' => 'return',
