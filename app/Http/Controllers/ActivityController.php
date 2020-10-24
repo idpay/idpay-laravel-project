@@ -21,12 +21,17 @@ use Verta;
 
 class ActivityController extends MainController
 {
-    private $calbackUrl;
+    /**
+     * @var OrderRepositoryInterface
+     */
     protected $model;
 
+    /**
+     * ActivityController constructor.
+     * @param OrderRepositoryInterface $model
+     */
     public function __construct(OrderRepositoryInterface $model)
     {
-        $this->calbackUrl = route('callback');
         $this->model = $model;
     }
 
@@ -84,7 +89,6 @@ class ActivityController extends MainController
 
             return \response()->json(['status' => 'OK', 'paymentAnswer' => $html, 'link' => $link, 'transferToPort' => $transferToPortHtml, 'message' => 'تراکنش شما ایجاد شد.']);
 
-
         } else {
 
             $activityArray = Fractal::create()->item($activity, new FaildActivitiyView())->toArray();
@@ -97,10 +101,7 @@ class ActivityController extends MainController
 
             return \response()->json(['status' => 'ERROR', 'paymentAnswer' => $html, 'message' => 'تراکنش شما ایجاد نشد.']);
         }
-
-
     }
-
 
     /**
      * @param Request $request
@@ -117,9 +118,9 @@ class ActivityController extends MainController
         ];
 
         $this->model->createActivity($activity, $order->id);
+
         return \response()->json(['status' => 'OK', 'link' => $request->link, 'message' => 'ممنون از انتخاب شما']);
     }
-
 
     /*
      * after connect in API IDPay return this function
@@ -143,8 +144,8 @@ class ActivityController extends MainController
         );
 
         $this->model->createActivity($activity, $request->order_id);
-        return redirect()->route('show', $order->uuid);
 
+        return redirect()->route('show', $order->uuid);
     }
 
     /**
@@ -157,7 +158,6 @@ class ActivityController extends MainController
      */
     public function verify(Request $request, $id)
     {
-
         $order = Order::findOrFail($id);
         $params = [
             'id' => json_decode($order->activities->where('step', 'create')->last()->response)->id,
@@ -168,7 +168,6 @@ class ActivityController extends MainController
 
         $header = $this->header(json_decode($order->activities->where('step', 'create')->last()->request)->API_KEY, $order['sandbox']);
         $response = $this->requestHttp($params, $header, '/payment/verify');
-
 
         $activity = [
             'http_code' => $response->getStatusCode(),
@@ -198,7 +197,6 @@ class ActivityController extends MainController
         ])->render();
 
         return \response()->json(['status' => 'OK', 'data' => $html, 'message' => "کد وضعیت پاسخ: $http_code "]);
-
     }
 
 }

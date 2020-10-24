@@ -31,7 +31,6 @@ class CallBackResultArry extends TransformerAbstract
      */
     public function transform($item)
     {
-
         $item=json_decode($item);
 
         return [

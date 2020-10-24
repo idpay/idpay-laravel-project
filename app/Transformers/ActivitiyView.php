@@ -27,13 +27,13 @@ class ActivitiyView extends TransformerAbstract
     ];
 
     /**
-     * A Fractal transformer.
-     *
-     * @return array
+     * @param $activity
+     * @return array[]
      */
     public function transform($activity)
     {
         $params = json_decode($activity['request']);
+
         $header = [
             'Content-Type' => 'application/json',
             "X-API-KEY" => $params->API_KEY,
@@ -41,6 +41,7 @@ class ActivitiyView extends TransformerAbstract
         ];
 
         $created = new Verta($activity['created_at']);
+
         return [
             'view' => [
                 'request' => json_encode([
@@ -57,10 +58,13 @@ class ActivitiyView extends TransformerAbstract
 
     }
 
+    /**
+     * @param $params
+     * @return array
+     */
     public function params($params)
     {
         return [
-
             "order_id" => $params->order_id,
             "amount" => $params->amount,
             "name" => $params->name,

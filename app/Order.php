@@ -7,15 +7,19 @@ use Webpatser\Uuid\Uuid;
 
 class Order extends Model
 {
+    /**
+     * @var bool
+     */
     public $timestamps = true;
 
-//    protected $primaryKey = "uuid";
-
-
-
+    /**
+     * @var string
+     */
     public $table = 'orders';
 
-
+    /**
+     * @var string[]
+     */
     public $fillable = [
         'api_key',
         'sandbox',
@@ -31,18 +35,25 @@ class Order extends Model
         'uuid',
     ];
 
-
+    /**
+     * @return string
+     */
     public function getRouteKeyName()
     {
         return 'uuid';
     }
 
-
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function activities()
     {
         return $this->hasMany('App\Activity', 'order_id', 'id');
     }
 
+    /**
+     *  Generate uuid
+     */
     public static function boot()
     {
         parent::boot();

@@ -1,7 +1,5 @@
 <?php
 
-
-
 Route::get('callback', 'ActivityController@callback');
 Route::post('callback', 'ActivityController@callback')->name('callback');
 Route::get('/', 'ActivityViewController@index')->name('index');

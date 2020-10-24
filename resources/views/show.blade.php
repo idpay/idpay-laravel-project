@@ -38,7 +38,7 @@
         {!! $callbackResultHtml !!}
     </div>
 
-    @if($verifyRequestHtml !== null)
+    @if(!empty($verifyRequestHtml))
         <div class="row">
             <blockquote class="blockquote text-center titleAction">
                 <p class="mb-0">تایید تراکنش</p>
