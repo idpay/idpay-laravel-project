@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
-
+    /**
+     * @var
+     */
     public $msg;
 
     /**
@@ -17,15 +19,14 @@ class MainController extends Controller
      */
     public function header($api_key, $sandbox)
     {
-
         $header = [
             'Content-Type' => 'application/json',
             "X-API-KEY" => $api_key,
             'X-SANDBOX' => $sandbox
         ];
+
         return $header;
     }
-
 
     /**
      * @param $params
@@ -56,14 +57,12 @@ class MainController extends Controller
         return $response;
     }
 
-
     /**
      * @param $status
      * @return string
      */
     public function get_status_description($status)
     {
-
         switch ($status) {
             case 1:
                 $this->msg = 'پرداخت انجام نشده است.  ';
@@ -105,10 +104,8 @@ class MainController extends Controller
             case 405:
                 $this->msg = 'تایید پرداخت امکان پذیر نیست.';
                 break;
-
         }
 
     }
-
 
 }

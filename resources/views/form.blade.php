@@ -35,7 +35,7 @@
     <div class="form-group">
         <label class="control-label col-sm-4" for="{{__('sandbox.callback')}}">{{__('sandbox.callback')}} *</label>
         <div class="col-sm-8">
-            <input type="text" class="form-control en-style" id="callback" placeholder="https://sandbox.idpay.ir/callback" name="callback" @if(isset($order)) disabled  value="{{$order->callback}}" @else  value="{{route('callback')}}" @endif>
+            <input type="text" class="form-control en-style" id="callback" placeholder="https://sandbox.idpay.ir/callback" name="callback" @if(isset($order)) disabled  value="{{$order->callback}}" @else  value="{{url('/callback')}}" @endif>
         </div>
     </div>
 

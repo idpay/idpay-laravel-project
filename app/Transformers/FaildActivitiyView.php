@@ -57,17 +57,14 @@ class FaildActivitiyView extends TransformerAbstract
 
         ];
 
-
     }
 
-
-
-
-
+    /**
+     * @param $params
+     * @return array
+     */
     public function params($params)
     {
-
-
         return [
 
             "order_id" => $params->order_id,
@@ -80,5 +77,4 @@ class FaildActivitiyView extends TransformerAbstract
             "reseller" => $params->reseller,
         ];
     }
-
 }

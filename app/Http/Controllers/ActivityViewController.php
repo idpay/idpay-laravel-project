@@ -17,11 +17,15 @@ class ActivityViewController extends MainController
 {
 
     /**
-     * @return $this
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-        return view('index')->with(['paymentAnswerHtml' => '',]);
+        return view('index')->with(
+            [
+                'paymentAnswerHtml' => '',
+            ]
+        );
     }
 
     /**
@@ -32,8 +36,11 @@ class ActivityViewController extends MainController
      */
     public function paymentAnswer($activityCreateArray, $httpCode)
     {
-        return view('partial.paymentAnswer')->with(['activity' => $activityCreateArray['data']['view'], 'http_code' => $httpCode,])->render();
-
+        return view('partial.paymentAnswer')->with(
+            ['activity' => $activityCreateArray['data']['view'],
+                'http_code' => $httpCode,
+            ]
+        )->render();
     }
 
     /**
@@ -44,8 +51,12 @@ class ActivityViewController extends MainController
      */
     public function transferToGetway($link, $id)
     {
-        return view('partial.transferToPort')->with(['link' => $link, 'order_id' => $id,])->render();
-
+        return view('partial.transferToPort')->with(
+            [
+                'link' => $link,
+                'order_id' => $id,
+            ]
+        )->render();
     }
 
     /**
@@ -56,10 +67,13 @@ class ActivityViewController extends MainController
      */
     public function callBack($link, $stepTime)
     {
-
-        return view('partial.callback')->with(['url' => $link, 'step_date' => new Verta($stepTime),])->render();
+        return view('partial.callback')->with(
+            [
+                'url' => $link,
+                'step_date' => new Verta($stepTime),
+            ]
+        )->render();
     }
-
 
     /**
      * @param $callbackResult
@@ -69,9 +83,14 @@ class ActivityViewController extends MainController
      */
     public function callBackResult($callbackResult, $stepTime)
     {
-        return view('partial.callbackResult')->with(['callbackResult' => $callbackResult, 'step_tome' => new Verta($stepTime), 'url' => route('callback'),])->render();
+        return view('partial.callbackResult')->with(
+            [
+                'callbackResult' => $callbackResult,
+                'step_tome' => new Verta($stepTime),
+                'url' => route('callback'),
+            ]
+        )->render();
     }
-
 
     /**
      * @param $response
@@ -81,14 +100,22 @@ class ActivityViewController extends MainController
      * @return array|string
      * @throws \Throwable
      */
-    public function verifyResult($response, $request, $httpCode, $stepTime,$request_time)
+    public function verifyResult($response, $request, $httpCode, $stepTime, $request_time)
     {
-        return view('partial.verifyResult')->with(['response' => $response, 'request' => $request, 'http_code' => $httpCode, 'step_time' => $stepTime, 'request_time' => $request_time,])->render();
+        return view('partial.verifyResult')->with(
+            [
+                'response' => $response,
+                'request' => $request,
+                'http_code' => $httpCode,
+                'step_time' => $stepTime,
+                'request_time' => $request_time,
+            ]
+        )->render();
     }
 
     /**
      * @param Order $order
-     * @return $this|void
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View|void
      * @throws \Throwable
      */
     public function show(Order $order)
@@ -102,9 +129,9 @@ class ActivityViewController extends MainController
         $callbackResult = $order->activities->where('step', 'return')->last();
         $verifyResult = $order->activities->where('step', 'verify')->last();
 
-        if ($activityCreate == null or $redirectResult == null)
+        if (empty($activityCreate) || empty($redirectResult)) {
             return abort(404);
-
+        }
 
         $activityCreateArray = Fractal::create()->item($activityCreate, new ActivitiyView())->toArray();
 
@@ -112,14 +139,14 @@ class ActivityViewController extends MainController
         $transferToPortHtml = $this->transferToGetway(json_decode($activityCreateArray['data']['view']['response'])->link, $order->id);
         $callbackHtml = $this->callBack(json_decode($activityCreateArray['data']['view']['response'])->link, $redirectResult->created_at);
 
-        if ($callbackResult !== null) {
+        if (!empty($callbackResult)) {
             $status = json_decode($order->activities->where('step', 'return')->last()->response)->status;
+
             if ((int)$status !== 10) {
                 $this->get_status_description($status);
-
                 $replaced = Str::replaceLast('استاتوس', $status, "جمله (وضعیت: استاتوس)");
                 $replaced = Str::replaceLast('جمله', $this->msg, $replaced);
-                Session::flash('status',$replaced );
+                Session::flash('status', $replaced);
                 toastr()->error($replaced);
             }
 
@@ -129,10 +156,9 @@ class ActivityViewController extends MainController
 
             $verifyRequestHtml = view('partial.verifyRequest')->with(['order_id' => $order->id,])->render();
 
-            if ($verifyResult !== null) {
+            if (!empty($verifyResult)) {
                 $verifyResultArray = Fractal::create()->item($verifyResult, new VerifyTransformer())->toArray();
-                $verifyResultHtml = $this->verifyResult($verifyResultArray['data']['view']['response'], $verifyResultArray['data']['view']['request'], $verifyResult->http_code, $verifyResultArray['data']['view']['step_time'],$verifyResultArray['data']['view']['request_time']);
-
+                $verifyResultHtml = $this->verifyResult($verifyResultArray['data']['view']['response'], $verifyResultArray['data']['view']['request'], $verifyResult->http_code, $verifyResultArray['data']['view']['step_time'], $verifyResultArray['data']['view']['request_time']);
             }
         }
 
