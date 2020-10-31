@@ -31,8 +31,8 @@ class CallBackResultArry extends TransformerAbstract
      */
     public function transform($item)
     {
-        $item=json_decode($item);
-
+        $item = json_decode($item);
+        $method = empty($item->REQUEST_METHOD) ? 'POST' : $item->REQUEST_METHOD;
         return [
             'view'=>[
                 'id'=>$item->id,
@@ -41,7 +41,7 @@ class CallBackResultArry extends TransformerAbstract
                 'track_id'=>$item->track_id,
             ],
             'CONTENT_TYPE'=>'Content-Type: '.$item->CONTENT_TYPE,
-            'REQUEST_METHOD'=>'REQUEST_METHOD: '. empty($item->REQUEST_METHOD) ? 'POST' : $item->REQUEST_METHOD,
+            'REQUEST_METHOD'=>'REQUEST_METHOD: '. $method,
         ];
     }
 }
