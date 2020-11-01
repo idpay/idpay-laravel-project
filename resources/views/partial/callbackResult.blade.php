@@ -23,11 +23,10 @@
     @endphp
     <h4 style="text-align: left">Method</h4>
     @php
-
         echo '<pre>',print_r($callbackResult['REQUEST_METHOD'], true),'</pre>';
     @endphp
     <h4 style="text-align: left">
-        @if(!empty($callbackResult['REQUEST_METHOD']) && $callbackResult['REQUEST_METHOD'] == 'REQUEST_METHOD: GET')
+        @if(!empty($callbackResult['REQUEST_METHOD']) && $callbackResult['REQUEST_METHOD'] == 'GET')
             Query string
         @else
             Form data
