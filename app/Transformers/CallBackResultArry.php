@@ -31,18 +31,19 @@ class CallBackResultArry extends TransformerAbstract
      */
     public function transform($item)
     {
-        $item = json_decode($item);
+        $item = json_decode($item, true);
 
-        $method = empty($item->REQUEST_METHOD) ? 'POST' : $item->REQUEST_METHOD;
-        return [
-            'view'=>[
-                'id'=>$item->id,
-                'status'=>$item->status,
-                'order_id'=>$item->order_id,
-                'track_id'=>$item->track_id,
-            ],
-            'CONTENT_TYPE'=>'Content-Type: '.$item->CONTENT_TYPE,
+        $method = empty($item['CONTENT_TYPE']) ? 'POST' : $item['REQUEST_METHOD'];
+
+        $result = [
+            'view'=> $item,
+            'CONTENT_TYPE'=>'Content-Type: '.$item['CONTENT_TYPE'],
             'REQUEST_METHOD'=> $method,
         ];
+
+        unset($result['view']['CONTENT_TYPE']);
+        unset($result['view']['REQUEST_METHOD']);
+
+        return $result;
     }
 }
