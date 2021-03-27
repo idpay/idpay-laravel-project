@@ -25,6 +25,7 @@
     "dependencies": {
         "elliptic": "^6.5.4",
         "is-svg": "^4.2.2",
-        "object-path": "^0.11.5"
+        "object-path": "^0.11.5",
+        "ssri": "^8.0.1"
     }
 }
