@@ -23,6 +23,7 @@
         "vue": "^2.5.17"
     },
     "dependencies": {
+        "elliptic": "^6.5.4",
         "object-path": "^0.11.5"
     }
 }
