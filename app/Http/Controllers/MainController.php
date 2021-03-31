@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class MainController extends Controller
 {
@@ -37,7 +38,7 @@ class MainController extends Controller
      */
     public function requestHttp($params, $header, $url)
     {
-        $url = starts_with($url, '/') ? $url : "/$url";
+        $url = Str::startsWith($url, '/') ? $url : "/$url";
         $idpay_endpoint = env('IDPAY_ENDPOINT','https://api.idpay.ir/v1.1').$url;
 
         $client = new Client();
