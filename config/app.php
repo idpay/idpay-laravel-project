@@ -161,7 +161,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Hekmatinasser\Verta\VertaServiceProvider::class,
+        Hekmatinasser\Verta\Laravel\VertaServiceProvider::class,
         Yoeunes\Toastr\ToastrServiceProvider::class,
 
 
@@ -230,8 +230,6 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Verta' => Hekmatinasser\Verta\Verta::class,
-
-
     ],
 
 ];
