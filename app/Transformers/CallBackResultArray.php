@@ -2,34 +2,15 @@
 
 namespace App\Transformers;
 
-use League\Fractal\TransformerAbstract;
-
-class CallBackResultArry extends TransformerAbstract
+class CallBackResultArray
 {
-    /**
-     * List of resources to automatically include
-     *
-     * @var array
-     */
-    protected $defaultIncludes = [
-        //
-    ];
-
-    /**
-     * List of resources possible to include
-     *
-     * @var array
-     */
-    protected $availableIncludes = [
-        //
-    ];
-
     /**
      * A Fractal transformer.
      *
+     * @param $item
      * @return array
      */
-    public function transform($item)
+    public static function transform($item)
     {
         $item = json_decode($item, true);
 

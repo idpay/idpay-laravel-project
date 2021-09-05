@@ -2,21 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Activity;
-use App\Order;
+use App\Models\Order;
 use App\Repositories\OrderRepositoryInterface;
-use App\Transformers\ActivitiyView;
-use App\Transformers\CallBackResultArry;
-use App\Transformers\FaildActivitiyView;
+use App\Transformers\ActivityView;
+use App\Transformers\FailedActivityView;
 use App\Transformers\VerifyTransformer;
+use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Validation\Rules\In;
-use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Http;
-use PHPUnit\Framework\Constraint\Callback;
-use Spatie\Fractal\Fractal;
-use Verta;
+use Throwable;
 
 
 class ActivityController extends MainController
@@ -37,9 +31,9 @@ class ActivityController extends MainController
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Throwable
+     * @return JsonResponse
+     * @throws GuzzleException
+     * @throws Throwable
      */
     public function store(Request $request)
     {
@@ -73,14 +67,14 @@ class ActivityController extends MainController
         if ($response->getStatusCode() == 201) {
             $this->model->update(['return_id' => json_decode($response->getBody())->id], $order->id);
 
-            $activityArray = Fractal::create()->item($activity, new ActivitiyView())->toArray();
+            $activityArray = ActivityView::transform($activity);
 
             $html = view('partial.paymentAnswer')->with([
-                'activity' => $activityArray['data']['view'],
+                'activity' => $activityArray['view'],
                 'http_code' => $response->getStatusCode(),
             ])->render();
 
-            $link = json_decode($activityArray['data']['view']['response'])->link;
+            $link = json_decode($activityArray['view']['response'])->link;
             $transferToPortHtml = view('partial.transferToPort')->with([
                 'link' => $link,
                 'order_id' => $order->id,
@@ -91,10 +85,10 @@ class ActivityController extends MainController
 
         } else {
 
-            $activityArray = Fractal::create()->item($activity, new FaildActivitiyView())->toArray();
+            $activityArray = FailedActivityView::transform($activity);
 
             $html = view('partial.paymentAnswer')->with([
-                'activity' => $activityArray['data']['view'],
+                'activity' => $activityArray['view'],
                 'http_code' => $response->getStatusCode(),
 
             ])->render();
@@ -106,7 +100,7 @@ class ActivityController extends MainController
     /**
      * @param Request $request
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function payment(Request $request, $id)
     {
@@ -152,9 +146,9 @@ class ActivityController extends MainController
      * @param Request $request
      * @param $id
      * connect to verify API IDPay and check double spendding
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Throwable
+     * @return JsonResponse
+     * @throws GuzzleException
+     * @throws Throwable
      */
     public function verify(Request $request, $id)
     {
@@ -185,15 +179,15 @@ class ActivityController extends MainController
             $activity = $this->model->createActivity($activity, $order->id);
         }
 
-        $activityArray = Fractal::create()->item($activity, new VerifyTransformer())->toArray();
+        $activityArray = VerifyTransformer::transform($activity);
 
         $http_code = $response->getStatusCode();
         $html = view('partial.verifyResult')->with([
-            'response' => $activityArray['data']['view']['response'],
-            'request' => $activityArray['data']['view']['request'],
+            'response' => $activityArray['view']['response'],
+            'request' => $activityArray['view']['request'],
             'http_code' => $http_code,
-            'step_time' => $activityArray['data']['view']['step_time'],
-            'request_time' => $activityArray['data']['view']['request_time'],
+            'step_time' => $activityArray['view']['step_time'],
+            'request_time' => $activityArray['view']['request_time'],
         ])->render();
 
         return \response()->json(['status' => 'OK', 'data' => $html, 'message' => "کد وضعیت پاسخ: $http_code "]);

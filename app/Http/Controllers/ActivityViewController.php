@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Order;
-use App\Repositories\OrderRepositoryInterface;
-use App\Transformers\ActivitiyView;
-use App\Transformers\CallBackResultArry;
+use App\Models\Order;
+use App\Transformers\ActivityView;
+use App\Transformers\CallBackResultArray;
 use App\Transformers\VerifyTransformer;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
-use Spatie\Fractal\Fractal;
-use Hekmatinasser\Verta\Verta;
+use Illuminate\View\View;
+use Throwable;
 
 
 class ActivityViewController extends MainController
 {
 
     /**
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Application|Factory|View
      */
     public function index()
     {
@@ -32,12 +33,12 @@ class ActivityViewController extends MainController
      * @param $activityCreateArray
      * @param $httpCode
      * @return array|string
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function paymentAnswer($activityCreateArray, $httpCode)
     {
         return view('partial.paymentAnswer')->with(
-            ['activity' => $activityCreateArray['data']['view'],
+            ['activity' => $activityCreateArray['view'],
                 'http_code' => $httpCode,
             ]
         )->render();
@@ -47,9 +48,9 @@ class ActivityViewController extends MainController
      * @param $link
      * @param $id
      * @return array|string
-     * @throws \Throwable
+     * @throws Throwable
      */
-    public function transferToGetway($link, $id)
+    public function transferToGateway($link, $id)
     {
         return view('partial.transferToPort')->with(
             [
@@ -63,14 +64,14 @@ class ActivityViewController extends MainController
      * @param $link
      * @param $stepTime
      * @return array|string
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function callBack($link, $stepTime)
     {
         return view('partial.callback')->with(
             [
                 'url' => $link,
-                'step_date' => new Verta($stepTime),
+                'step_date' => jdate('Y-m-d H:i:s', $stepTime->timestamp),
             ]
         )->render();
     }
@@ -79,14 +80,14 @@ class ActivityViewController extends MainController
      * @param $callbackResult
      * @param $stepTime
      * @return array|string
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function callBackResult($callbackResult, $stepTime)
     {
         return view('partial.callbackResult')->with(
             [
                 'callbackResult' => $callbackResult,
-                'step_tome' => new Verta($stepTime),
+                'step_tome' => jdate('Y-m-d H:i:s', $stepTime->timestamp),
                 'url' => route('callback'),
             ]
         )->render();
@@ -97,8 +98,8 @@ class ActivityViewController extends MainController
      * @param $request
      * @param $httpCode
      * @param $stepTime
+     * @param $request_time
      * @return array|string
-     * @throws \Throwable
      */
     public function verifyResult($response, $request, $httpCode, $stepTime, $request_time)
     {
@@ -115,8 +116,8 @@ class ActivityViewController extends MainController
 
     /**
      * @param Order $order
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View|void
-     * @throws \Throwable
+     * @return Application|Factory|View|void
+     * @throws Throwable
      */
     public function show(Order $order)
     {
@@ -133,11 +134,11 @@ class ActivityViewController extends MainController
             return abort(404);
         }
 
-        $activityCreateArray = Fractal::create()->item($activityCreate, new ActivitiyView())->toArray();
+        $activityCreateArray = ActivityView::transform($activityCreate);
 
         $paymentAnswerHtml = $this->paymentAnswer($activityCreateArray, $activityCreate->http_code);
-        $transferToPortHtml = $this->transferToGetway(json_decode($activityCreateArray['data']['view']['response'])->link, $order->id);
-        $callbackHtml = $this->callBack(json_decode($activityCreateArray['data']['view']['response'])->link, $redirectResult->created_at);
+        $transferToPortHtml = $this->transferToGateway(json_decode($activityCreateArray['view']['response'])->link, $order->id);
+        $callbackHtml = $this->callBack(json_decode($activityCreateArray['view']['response'])->link, $redirectResult->created_at);
 
         if (!empty($callbackResult)) {
             $status = json_decode($order->activities->where('step', 'return')->last()->response)->status;
@@ -150,15 +151,14 @@ class ActivityViewController extends MainController
                 toastr()->error($replaced);
             }
 
-            $callbackResultArray = Fractal::create()->item($callbackResult->response, new CallBackResultArry())->toArray();
-
-            $callbackResultHtml = $this->callBackResult($callbackResultArray['data'], $callbackResult->created_at);
+            $callbackResultArray = CallBackResultArray::transform($callbackResult->response);
+            $callbackResultHtml = $this->callBackResult($callbackResultArray, $callbackResult->created_at);
 
             $verifyRequestHtml = view('partial.verifyRequest')->with(['order_id' => $order->id,])->render();
 
             if (!empty($verifyResult)) {
-                $verifyResultArray = Fractal::create()->item($verifyResult, new VerifyTransformer())->toArray();
-                $verifyResultHtml = $this->verifyResult($verifyResultArray['data']['view']['response'], $verifyResultArray['data']['view']['request'], $verifyResult->http_code, $verifyResultArray['data']['view']['step_time'], $verifyResultArray['data']['view']['request_time']);
+                $verifyResultArray = VerifyTransformer::transform($verifyResult);
+                $verifyResultHtml = $this->verifyResult($verifyResultArray['view']['response'], $verifyResultArray['view']['request'], $verifyResult->http_code, $verifyResultArray['view']['step_time'], $verifyResultArray['view']['request_time']);
             }
         }
 
