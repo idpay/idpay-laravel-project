@@ -31,7 +31,7 @@ class VerifyTransformer
         return [
             'view' => [
                 'request' => json_encode([
-                    'url' => "Post: ".env('IDPAY_ENDPOINT','https://api.idpay.ir/v1.1')."/payment/verify",
+                    'url' => 'Post: ' . env('IDPAY_ENDPOINT', 'https://api.idpay.ir/v1.1') . '/payment/verify',
                     'header' => $header,
                     'params' => self::params($params)
                 ]),
@@ -42,7 +42,6 @@ class VerifyTransformer
         ];
     }
 
-
     /**
      * @param $params
      * @return array
@@ -50,10 +49,8 @@ class VerifyTransformer
     protected static function params($params)
     {
         return [
-            "id" => $params->id,
-            "order_id" => $params->order_id,
+            'id' => $params->id,
+            'order_id' => $params->order_id,
         ];
     }
-
-
 }
