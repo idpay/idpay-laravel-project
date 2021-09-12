@@ -2,9 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Activity;
-use App\Order;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Activity;
+use App\Models\Order;
 
 class OrderRepository implements OrderRepositoryInterface
 {

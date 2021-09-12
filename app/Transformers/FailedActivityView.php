@@ -2,35 +2,15 @@
 
 namespace App\Transformers;
 
-use App\Activity;
-use League\Fractal\TransformerAbstract;
-use Verta;
+use Carbon\Carbon;
 
-class ActivitiyView extends TransformerAbstract
+class FailedActivityView
 {
-    /**
-     * List of resources to automatically include
-     *
-     * @var array
-     */
-    protected $defaultIncludes = [
-        //
-    ];
-
-    /**
-     * List of resources possible to include
-     *
-     * @var array
-     */
-    protected $availableIncludes = [
-        //
-    ];
-
     /**
      * @param $activity
      * @return array[]
      */
-    public function transform($activity)
+    public static function transform($activity)
     {
         $params = json_decode($activity['request']);
 
@@ -40,17 +20,17 @@ class ActivitiyView extends TransformerAbstract
             'X-SANDBOX' => (int)$params->sandbox
         ];
 
-        $created = new Verta($activity['created_at']);
+        $created = jdate('Y-m-d H:i:s', Carbon::parse($activity['created_at'])->timestamp);
 
         return [
             'view' => [
                 'request' => json_encode([
                     'url' => "Post: ".env('IDPAY_ENDPOINT','https://api.idpay.ir/v1.1')."/payment",
                     'header' => $header,
-                    'params' => $this->params($params)
+                    'params' => self::params($params)
                 ]),
                 'response' => $activity['response'],
-                'step_time' => $created->format('Y-m-d H:i:s'),
+                'step_time' => $created,
                 'request_time' => $activity['request_time'],
             ],
 
@@ -62,9 +42,10 @@ class ActivitiyView extends TransformerAbstract
      * @param $params
      * @return array
      */
-    public function params($params)
+    protected static function params($params)
     {
         return [
+
             "order_id" => $params->order_id,
             "amount" => $params->amount,
             "name" => $params->name,
@@ -75,5 +56,4 @@ class ActivitiyView extends TransformerAbstract
             "reseller" => $params->reseller,
         ];
     }
-
 }

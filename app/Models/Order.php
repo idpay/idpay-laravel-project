@@ -1,10 +1,18 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Webpatser\Uuid\Uuid;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
+/**
+ * Class Order
+ * @package App\Models
+ *
+ * @property $id
+ * @property $activities
+ */
 class Order extends Model
 {
     /**
@@ -44,11 +52,11 @@ class Order extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function activities()
     {
-        return $this->hasMany('App\Activity', 'order_id', 'id');
+        return $this->hasMany(Activity::class, 'order_id', 'id');
     }
 
     /**
@@ -58,7 +66,7 @@ class Order extends Model
     {
         parent::boot();
         self::creating(function ($model) {
-            $model->uuid = (string)Uuid::generate(4);
+            $model->uuid = Str::uuid()->toString();
         });
     }
 

@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
-use Illuminate\Http\Request;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Str;
+use Psr\Http\Message\ResponseInterface;
 
 class MainController extends Controller
 {
@@ -20,21 +21,19 @@ class MainController extends Controller
      */
     public function header($api_key, $sandbox)
     {
-        $header = [
+        return [
             'Content-Type' => 'application/json',
             "X-API-KEY" => $api_key,
             'X-SANDBOX' => $sandbox
         ];
-
-        return $header;
     }
 
     /**
      * @param $params
      * @param $header
      * @param $url
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return ResponseInterface
+     * @throws GuzzleException
      */
     public function requestHttp($params, $header, $url)
     {
@@ -60,7 +59,6 @@ class MainController extends Controller
 
     /**
      * @param $status
-     * @return string
      */
     public function get_status_description($status)
     {

@@ -2,35 +2,17 @@
 
 namespace App\Transformers;
 
-use League\Fractal\TransformerAbstract;
-use Verta;
+use Carbon\Carbon;
 
-class VerifyTransformer extends TransformerAbstract
+class VerifyTransformer
 {
-    /**
-     * List of resources to automatically include
-     *
-     * @var array
-     */
-    protected $defaultIncludes = [
-        //
-    ];
-
-    /**
-     * List of resources possible to include
-     *
-     * @var array
-     */
-    protected $availableIncludes = [
-        //
-    ];
-
     /**
      * A Fractal transformer.
      *
+     * @param $activity
      * @return array
      */
-    public function transform($activity)
+    public static function transform($activity)
     {
         $params = json_decode($activity['request']);
 
@@ -49,29 +31,26 @@ class VerifyTransformer extends TransformerAbstract
         return [
             'view' => [
                 'request' => json_encode([
-                    'url' => "Post: ".env('IDPAY_ENDPOINT','https://api.idpay.ir/v1.1')."/payment/verify",
+                    'url' => 'Post: ' . env('IDPAY_ENDPOINT', 'https://api.idpay.ir/v1.1') . '/payment/verify',
                     'header' => $header,
-                    'params' => $this->params($params)
+                    'params' => self::params($params)
                 ]),
                 'response' => $activity['response'],
-                'step_time' => new Verta($created_at),
+                'step_time' => jdate('Y-m-d H:i:s', Carbon::parse($created_at)->timestamp),
                 'request_time' => $activity['request_time'],
             ],
         ];
     }
 
-
     /**
      * @param $params
      * @return array
      */
-    public function params($params)
+    protected static function params($params)
     {
         return [
-            "id" => $params->id,
-            "order_id" => $params->order_id,
+            'id' => $params->id,
+            'order_id' => $params->order_id,
         ];
     }
-
-
 }

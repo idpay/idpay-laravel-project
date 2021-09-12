@@ -5,7 +5,7 @@ Simple project on Laravel framework for visual test API's payment service of IDP
 
 ## Requirments
 
-1. PHP >= 5.6
+1. PHP >= 7.3
 2. MySQL >= 5.7
 3. Composer >= 1.9.0
 
