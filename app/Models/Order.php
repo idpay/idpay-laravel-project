@@ -70,4 +70,12 @@ class Order extends Model
         });
     }
 
+    /**
+     * @param $value
+     * mask api key
+     */
+    public function setApiKeyAttribute($value)
+    {
+        $this->attributes['api_key'] = Str::mask($value, '*', 3,14);
+    }
 }

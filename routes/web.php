@@ -21,4 +21,4 @@ Route::get('/', [ActivityViewController::class, 'index'])->name('index');
 Route::get('/{order}', [ActivityViewController::class, 'show'])->name('show');
 Route::post('activity/store', [ActivityController::class, 'store'])->name('store');
 Route::post('activity/payment/{id}', [ActivityController::class, 'payment'])->name('payment');
-Route::post('verify/{id}', [ActivityController::class, 'verify'])->name('verify');
+Route::post('verify/{order:uuid}', [ActivityController::class, 'verify'])->name('verify');

@@ -122,7 +122,7 @@ class ActivityController extends MainController
     public function callback(Request $request)
     {
         $order = $this->model->find($request->order_id);
-        $CONTENT_TYPE = !empty($request->server->all()['CONTENT_TYPE']) ? $request->server->all()['CONTENT_TYPE'] : 'html/text' ;
+        $CONTENT_TYPE = !empty($request->server->all()['CONTENT_TYPE']) ? $request->server->all()['CONTENT_TYPE'] : 'html/text';
 
         // Add to request
         $request->request->add([
@@ -144,15 +144,13 @@ class ActivityController extends MainController
 
     /**
      * @param Request $request
-     * @param $id
-     * connect to verify API IDPay and check double spendding
+     * @param Order $order
      * @return JsonResponse
+     * connect to verify API IDPay and check double spending
      * @throws GuzzleException
-     * @throws Throwable
      */
-    public function verify(Request $request, $id)
+    public function verify(Request $request, Order $order): JsonResponse
     {
-        $order = Order::findOrFail($id);
         $params = [
             'id' => json_decode($order->activities->where('step', 'create')->last()->response)->id,
             'order_id' => $order->id,
