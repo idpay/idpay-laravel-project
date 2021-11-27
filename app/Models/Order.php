@@ -72,10 +72,10 @@ class Order extends Model
 
     /**
      * @param $value
-     * mask api key
+     * @return string
      */
-    public function setApiKeyAttribute($value)
+    public function getApiKeyAttribute($value): string
     {
-        $this->attributes['api_key'] = Str::mask($value, '*', 3,14);
+        return Str::mask($value, '*', 3, 30);
     }
 }

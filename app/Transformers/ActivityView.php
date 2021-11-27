@@ -10,13 +10,13 @@ class ActivityView
      * @param $activity
      * @return array[]
      */
-    public static function transform($activity)
+    public static function transform($activity): array
     {
-        $params = json_decode($activity['request']);
+        $params = $activity->request;
 
         $header = [
             'Content-Type' => 'application/json',
-            "X-API-KEY" => $params->API_KEY,
+            "X-API-KEY" => $activity->mask_api_key,
             'X-SANDBOX' => (int)$params->sandbox
         ];
 
@@ -25,7 +25,7 @@ class ActivityView
         return [
             'view' => [
                 'request' => json_encode([
-                    'url' => "Post: ".env('IDPAY_ENDPOINT','https://api.idpay.ir/v1.1')."/payment",
+                    'url' => "Post: " . env('IDPAY_ENDPOINT', 'https://api.idpay.ir/v1.1') . "/payment",
                     'header' => $header,
                     'params' => self::params($params)
                 ]),
@@ -35,14 +35,13 @@ class ActivityView
             ],
 
         ];
-
     }
 
     /**
      * @param $params
      * @return array
      */
-    protected static function params($params)
+    protected static function params($params): array
     {
         return [
             "order_id" => $params->order_id,
@@ -55,5 +54,4 @@ class ActivityView
             "reseller" => $params->reseller,
         ];
     }
-
 }

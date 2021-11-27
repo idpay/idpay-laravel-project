@@ -9,9 +9,9 @@ use App\Transformers\FailedActivityView;
 use App\Transformers\VerifyTransformer;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Throwable;
-
 
 class ActivityController extends MainController
 {
@@ -35,7 +35,7 @@ class ActivityController extends MainController
      * @throws GuzzleException
      * @throws Throwable
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $order = $this->model->create($request->toArray());
         $params = [
@@ -68,7 +68,6 @@ class ActivityController extends MainController
             $this->model->update(['return_id' => json_decode($response->getBody())->id], $order->id);
 
             $activityArray = ActivityView::transform($activity);
-
             $html = view('partial.paymentAnswer')->with([
                 'activity' => $activityArray['view'],
                 'http_code' => $response->getStatusCode(),
@@ -77,8 +76,7 @@ class ActivityController extends MainController
             $link = json_decode($activityArray['view']['response'])->link;
             $transferToPortHtml = view('partial.transferToPort')->with([
                 'link' => $link,
-                'order_id' => $order->id,
-
+                'order_uuid' => $order->uuid,
             ])->render();
 
             return \response()->json(['status' => 'OK', 'paymentAnswer' => $html, 'link' => $link, 'transferToPort' => $transferToPortHtml, 'message' => 'تراکنش شما ایجاد شد.']);
@@ -99,15 +97,14 @@ class ActivityController extends MainController
 
     /**
      * @param Request $request
-     * @param $id
+     * @param Order $order
      * @return JsonResponse
      */
-    public function payment(Request $request, $id)
+    public function payment(Request $request, Order $order): JsonResponse
     {
-        $order = Order::find($id);
         $activity = [
             'step' => 'redirect',
-            'request' => $order->activities->last()->request,
+            'request' => json_encode($order->activities->last()->request),
             'response' => json_encode([]),
         ];
 
@@ -119,10 +116,10 @@ class ActivityController extends MainController
     /*
      * after connect in API IDPay return this function
      */
-    public function callback(Request $request)
+    public function callback(Request $request): RedirectResponse
     {
         $order = $this->model->find($request->order_id);
-        $CONTENT_TYPE = !empty($request->server->all()['CONTENT_TYPE']) ? $request->server->all()['CONTENT_TYPE'] : 'html/text';
+        $CONTENT_TYPE = !empty($request->server->all()['CONTENT_TYPE']) ? $request->server->all()['CONTENT_TYPE'] : 'html/text' ;
 
         // Add to request
         $request->request->add([
@@ -143,22 +140,22 @@ class ActivityController extends MainController
     }
 
     /**
-     * @param Request $request
      * @param Order $order
-     * @return JsonResponse
      * connect to verify API IDPay and check double spending
+     * @return JsonResponse
      * @throws GuzzleException
+     * @throws Throwable
      */
-    public function verify(Request $request, Order $order): JsonResponse
+    public function verify(Order $order): JsonResponse
     {
         $params = [
             'id' => json_decode($order->activities->where('step', 'create')->last()->response)->id,
             'order_id' => $order->id,
-            'API_KEY' => json_decode($order->activities->where('step', 'create')->last()->request)->API_KEY,
+            'API_KEY' => $order->activities->where('step', 'create')->last()->request->API_KEY,
             'sandbox' => (int)$order['sandbox'],
         ];
 
-        $header = $this->header(json_decode($order->activities->where('step', 'create')->last()->request)->API_KEY, $order['sandbox']);
+        $header = $this->header($order->activities->where('step', 'create')->last()->request->API_KEY, $order['sandbox']);
         $response = $this->requestHttp($params, $header, '/payment/verify');
 
         $activity = [
@@ -190,5 +187,4 @@ class ActivityController extends MainController
 
         return \response()->json(['status' => 'OK', 'data' => $html, 'message' => "کد وضعیت پاسخ: $http_code "]);
     }
-
 }

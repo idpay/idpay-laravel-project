@@ -12,14 +12,12 @@ class OrderRepository implements OrderRepositoryInterface
 
     protected $activity;
 
-
     // Constructor to bind model to repo
-    public function __construct(Order $model,Activity $activity)
+    public function __construct(Order $model, Activity $activity)
     {
         $this->model = $model;
         $this->activity = $activity;
     }
-
 
     // Get all instances of model
     public function all()
@@ -30,22 +28,18 @@ class OrderRepository implements OrderRepositoryInterface
     // create a new record in the database
     public function create(array $data)
     {
-
-        return $this->model->create(
-
-            [
-                'api_key' => $data['api_key'],
-                'sandbox' => $data['sandbox'],
-                'name' => $data['name'],
-                'phone' => $data['phone_number'],
-                'email' => $data['email'],
-                'amount' =>  $data['amount'],
-                'reseller' => $data['reseller'],
-                'callback' => $data['callback'],
-                'desc' => $data['desc'],
-                'status' => 'processing',
-            ]
-        );
+        return $this->model->create([
+            'api_key' => $data['api_key'],
+            'sandbox' => $data['sandbox'],
+            'name' => $data['name'],
+            'phone' => $data['phone_number'],
+            'email' => $data['email'],
+            'amount' => $data['amount'],
+            'reseller' => $data['reseller'],
+            'callback' => $data['callback'],
+            'desc' => $data['desc'],
+            'status' => 'processing',
+        ]);
     }
 
     // update record in the database
@@ -86,16 +80,13 @@ class OrderRepository implements OrderRepositoryInterface
         return $this->model->with($relations);
     }
 
-
+    /**
+     * @param array $data
+     * @param $id
+     * @return mixed
+     */
     public function createActivity(array $data, $id)
     {
-        $activity = $this->model->findOrFail($id)->activities()->create($data);
-        return $activity->toArray();
+        return $this->model->findOrFail($id)->activities()->create($data);
     }
-
-
-
-
-
-
 }
