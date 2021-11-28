@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use App\Models\Order;
 use App\Repositories\OrderRepositoryInterface;
 use App\Transformers\ActivityView;
@@ -119,7 +120,7 @@ class ActivityController extends MainController
     public function callback(Request $request): RedirectResponse
     {
         $order = $this->model->find($request->order_id);
-        $CONTENT_TYPE = !empty($request->server->all()['CONTENT_TYPE']) ? $request->server->all()['CONTENT_TYPE'] : 'html/text' ;
+        $CONTENT_TYPE = !empty($request->server->all()['CONTENT_TYPE']) ? $request->server->all()['CONTENT_TYPE'] : 'html/text';
 
         // Add to request
         $request->request->add([
@@ -164,12 +165,11 @@ class ActivityController extends MainController
             'response' => $response->getBody(),
             'step' => 'verify',
             'request_time' => $response->elapsed,
-
         ];
 
         $activityModel = $order->activities->where('step', 'verify');
         if ($activityModel->count()) {
-            $activity = $activity;
+            $activity = new Activity($activity);
         } else {
             $activity = $this->model->createActivity($activity, $order->id);
         }

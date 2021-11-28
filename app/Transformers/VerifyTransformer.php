@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+use App\Models\Activity;
 use Carbon\Carbon;
 
 class VerifyTransformer
@@ -9,10 +10,10 @@ class VerifyTransformer
     /**
      * A Fractal transformer.
      *
-     * @param $activity
+     * @param Activity $activity
      * @return array
      */
-    public static function transform($activity): array
+    public static function transform(Activity $activity): array
     {
         $params = $activity->request;
 
