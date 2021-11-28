@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+use App\Models\Activity;
 use Carbon\Carbon;
 
 class VerifyTransformer
@@ -9,24 +10,20 @@ class VerifyTransformer
     /**
      * A Fractal transformer.
      *
-     * @param $activity
+     * @param Activity $activity
      * @return array
      */
-    public static function transform($activity)
+    public static function transform(Activity $activity): array
     {
-        $params = json_decode($activity['request']);
+        $params = $activity->request;
 
         $header = [
             'Content-Type' => 'application/json',
-            "X-API-KEY" => $params->API_KEY,
+            "X-API-KEY" => $activity->mask_api_key,
             'X-SANDBOX' => (int)$params->sandbox
         ];
 
-        if (isset($activity['created_at'])) {
-            $created_at = $activity['created_at'];
-        } else {
-            $created_at = now()->format('Y-m-d H:i:s');
-        }
+        $created_at = $activity['created_at'] ?? now()->format('Y-m-d H:i:s');
 
         return [
             'view' => [
@@ -46,7 +43,7 @@ class VerifyTransformer
      * @param $params
      * @return array
      */
-    protected static function params($params)
+    protected static function params($params): array
     {
         return [
             'id' => $params->id,

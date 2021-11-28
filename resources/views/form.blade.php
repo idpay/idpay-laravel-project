@@ -2,6 +2,7 @@
       data-content="snedPaymentApiButton" data-value="transferToGetWay">
 
     @csrf
+
     <div class="form-group">
         <label class="control-label col-sm-4"
                for="{{__('sandbox.api_key')}}">{{__('sandbox.api_key')}} *</label>
@@ -10,6 +11,7 @@
             name="api_key" >
         </div>
     </div>
+
     <div class="form-group">
         <label class="control-label col-sm-4" for="{{__('sandbox.sanbox')}}">{{__('sandbox.sanbox')}} *
         </label>
@@ -39,15 +41,12 @@
         </div>
     </div>
 
-
-
     <div class="form-group">
         <label class="control-label col-sm-4" for="{{__('sandbox.name')}}">{{__('sandbox.name')}}</label>
         <div class="col-sm-8">
             <input type="text" class="form-control" id="name" placeholder="مثال: محمد" name="name" @if(isset($order)) disabled  value="{{$order->name}}" @endif>
         </div>
     </div>
-
 
     <div class="form-group">
         <label class="control-label col-sm-4"
@@ -57,7 +56,6 @@
             name="phone_number">
         </div>
     </div>
-
 
     <div class="form-group">
         <label class="control-label col-sm-4" for="{{__('sandbox.email')}}">{{__('sandbox.email')}}</label>
@@ -76,10 +74,6 @@
         </div>
     </div>
 
-
-
-
-
     <div class="form-group">
         <label class="control-label col-sm-4" for="{{__('sandbox.reseller')}}">{{__('sandbox.reseller')}}
         </label>
@@ -96,7 +90,6 @@
             <input type="submit" class="btn btn-primary btn-block" style="" id="snedPaymentApiButton"  @if(isset($order))   disabled @endif  value="ایجاد تراکنش">
         </div>
     </div>
-
 
     <div class="form-group">
         <div class="col-12">

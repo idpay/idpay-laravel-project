@@ -10,13 +10,13 @@ class FailedActivityView
      * @param $activity
      * @return array[]
      */
-    public static function transform($activity)
+    public static function transform($activity): array
     {
-        $params = json_decode($activity['request']);
+        $params = $activity->request;
 
         $header = [
             'Content-Type' => 'application/json',
-            "X-API-KEY" => $params->API_KEY,
+            "X-API-KEY" => $activity->mask_api_key,
             'X-SANDBOX' => (int)$params->sandbox
         ];
 
@@ -42,10 +42,9 @@ class FailedActivityView
      * @param $params
      * @return array
      */
-    protected static function params($params)
+    protected static function params($params): array
     {
         return [
-
             "order_id" => $params->order_id,
             "amount" => $params->amount,
             "name" => $params->name,

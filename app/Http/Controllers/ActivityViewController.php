@@ -13,20 +13,16 @@ use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Throwable;
 
-
 class ActivityViewController extends MainController
 {
-
     /**
      * @return Application|Factory|View
      */
     public function index()
     {
-        return view('index')->with(
-            [
-                'paymentAnswerHtml' => '',
-            ]
-        );
+        return view('index')->with([
+            'paymentAnswerHtml' => '',
+        ]);
     }
 
     /**
@@ -37,27 +33,24 @@ class ActivityViewController extends MainController
      */
     public function paymentAnswer($activityCreateArray, $httpCode)
     {
-        return view('partial.paymentAnswer')->with(
-            ['activity' => $activityCreateArray['view'],
-                'http_code' => $httpCode,
-            ]
-        )->render();
+        return view('partial.paymentAnswer')->with([
+            'activity' => $activityCreateArray['view'],
+            'http_code' => $httpCode,
+        ])->render();
     }
 
     /**
      * @param $link
-     * @param $id
+     * @param $uuid
      * @return array|string
      * @throws Throwable
      */
-    public function transferToGateway($link, $id)
+    public function transferToGateway($link, $uuid)
     {
-        return view('partial.transferToPort')->with(
-            [
-                'link' => $link,
-                'order_id' => $id,
-            ]
-        )->render();
+        return view('partial.transferToPort')->with([
+            'link' => $link,
+            'order_uuid' => $uuid,
+        ])->render();
     }
 
     /**
@@ -68,12 +61,10 @@ class ActivityViewController extends MainController
      */
     public function callBack($link, $stepTime)
     {
-        return view('partial.callback')->with(
-            [
-                'url' => $link,
-                'step_date' => jdate('Y-m-d H:i:s', $stepTime->timestamp),
-            ]
-        )->render();
+        return view('partial.callback')->with([
+            'url' => $link,
+            'step_date' => jdate('Y-m-d H:i:s', $stepTime->timestamp),
+        ])->render();
     }
 
     /**
@@ -103,15 +94,13 @@ class ActivityViewController extends MainController
      */
     public function verifyResult($response, $request, $httpCode, $stepTime, $request_time)
     {
-        return view('partial.verifyResult')->with(
-            [
-                'response' => $response,
-                'request' => $request,
-                'http_code' => $httpCode,
-                'step_time' => $stepTime,
-                'request_time' => $request_time,
-            ]
-        )->render();
+        return view('partial.verifyResult')->with([
+            'response' => $response,
+            'request' => $request,
+            'http_code' => $httpCode,
+            'step_time' => $stepTime,
+            'request_time' => $request_time,
+        ])->render();
     }
 
     /**
@@ -137,7 +126,7 @@ class ActivityViewController extends MainController
         $activityCreateArray = ActivityView::transform($activityCreate);
 
         $paymentAnswerHtml = $this->paymentAnswer($activityCreateArray, $activityCreate->http_code);
-        $transferToPortHtml = $this->transferToGateway(json_decode($activityCreateArray['view']['response'])->link, $order->id);
+        $transferToPortHtml = $this->transferToGateway(json_decode($activityCreateArray['view']['response'])->link, $order->uuid);
         $callbackHtml = $this->callBack(json_decode($activityCreateArray['view']['response'])->link, $redirectResult->created_at);
 
         if (!empty($callbackResult)) {
@@ -154,7 +143,7 @@ class ActivityViewController extends MainController
             $callbackResultArray = CallBackResultArray::transform($callbackResult->response);
             $callbackResultHtml = $this->callBackResult($callbackResultArray, $callbackResult->created_at);
 
-            $verifyRequestHtml = view('partial.verifyRequest')->with(['order_id' => $order->id,])->render();
+            $verifyRequestHtml = view('partial.verifyRequest')->with(['order_uuid' => $order->uuid])->render();
 
             if (!empty($verifyResult)) {
                 $verifyResultArray = VerifyTransformer::transform($verifyResult);
@@ -162,17 +151,15 @@ class ActivityViewController extends MainController
             }
         }
 
-        return view('show')->with(
-            [
-                'order' => $order,
-                'paymentAnswerHtml' => $paymentAnswerHtml,
-                'transferToPortHtml' => $transferToPortHtml,
-                'callbackHtml' => $callbackHtml,
-                'callbackResultHtml' => $callbackResultHtml,
-                'verifyRequestHtml' => $verifyRequestHtml,
-                'verifyResultHtml' => $verifyResultHtml,
-            ]
-        );
+        return view('show')->with([
+            'order' => $order,
+            'paymentAnswerHtml' => $paymentAnswerHtml,
+            'transferToPortHtml' => $transferToPortHtml,
+            'callbackHtml' => $callbackHtml,
+            'callbackResultHtml' => $callbackResultHtml,
+            'verifyRequestHtml' => $verifyRequestHtml,
+            'verifyResultHtml' => $verifyResultHtml,
+        ]);
     }
 
 }

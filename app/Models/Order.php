@@ -70,4 +70,12 @@ class Order extends Model
         });
     }
 
+    /**
+     * @param $value
+     * @return string
+     */
+    public function getApiKeyAttribute($value): string
+    {
+        return Str::mask($value, '*', 3, 30);
+    }
 }

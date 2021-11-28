@@ -3,7 +3,7 @@
         {{ session('status') }}
     </div>
 @else
-    <form class="form-horizontal" action="{{route('verify',['id'=>$order_id])}}"
+    <form class="form-horizontal" action="{{route('verify',['order' => $order_uuid])}}"
           id="verifyTransaction" method="post">
         @csrf
         <div class="form-group">
@@ -14,7 +14,6 @@
             </div>
             <label class="control-label col-sm-2" for="">
             </label>
-
         </div>
     </form>
 @endif

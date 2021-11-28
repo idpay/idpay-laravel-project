@@ -10,7 +10,7 @@ class CallBackResultArray
      * @param $item
      * @return array
      */
-    public static function transform($item)
+    public static function transform($item): array
     {
         $item = json_decode($item, true);
 
